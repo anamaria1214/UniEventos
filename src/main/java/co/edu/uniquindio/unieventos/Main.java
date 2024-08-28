@@ -1,19 +1,36 @@
 package co.edu.uniquindio.unieventos;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import co.edu.uniquindio.unieventos.repositorios.UsuarioRepo;
+import co.edu.uniquindio.unieventos.modelo.Usuario;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
 public class Main {
-    public static void main(String[] args) {
-        // Press Alt+Intro with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        // Press Mayús+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+    @Autowired
+    private UsuarioRepo usuarioRepo;
 
-            // Press Mayús+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
+    @Test
+    public void registrarTest(){
+        Usuario usuario = Usuario.builder()
+                .cedula("1213444")
+                .nombre("Pepito perez")
+                .direccion("Calle 12 # 12-12")
+                .telefono("3012223333")
+                .build();
+
+
+        //Guardamos el usuario en la base de datos
+        Usuario registro = usuarioRepo.save( usuario );
+
+
+        //Verificamos que se haya guardado validando que no sea null
+        Assertions.assertNotNull(registro);
     }
+
+
+
 }
