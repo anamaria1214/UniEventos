@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unieventos.modelo;
+package co.edu.uniquindio.unieventos.modelo.vo;
 
 import java.time.LocalDateTime;
 
@@ -11,4 +11,5 @@ public class Pago {
     private String codigoAutorizacion;
     private LocalDateTime fecha;
     private float valorTransaccion;
+    private String estado;
 }

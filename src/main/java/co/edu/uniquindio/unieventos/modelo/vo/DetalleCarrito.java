@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unieventos.modelo;
+package co.edu.uniquindio.unieventos.modelo.vo;
 
 import org.bson.types.ObjectId;
 

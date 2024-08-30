@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unieventos.modelo;
+package co.edu.uniquindio.unieventos.modelo.enums;
 
 public enum TipoEvento {
         DEPORTE(0),CONCIERTO(1), CULTURAL(2), MODA(3), BELLEZA(4);

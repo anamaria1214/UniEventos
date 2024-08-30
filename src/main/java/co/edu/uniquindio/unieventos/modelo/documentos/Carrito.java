@@ -1,5 +1,6 @@
-package co.edu.uniquindio.unieventos.modelo;
+package co.edu.uniquindio.unieventos.modelo.documentos;
 
+import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -23,4 +24,11 @@ public class Carrito {
     private LocalDateTime fechaUltimaAct;
     private ObjectId idUsuario;
     private List<DetalleCarrito> items;
+
+    @Builder
+    public Carrito(LocalDateTime fechaUltimaAct, ObjectId idUsuario, List<DetalleCarrito> items) {
+        this.fechaUltimaAct = fechaUltimaAct;
+        this.idUsuario = idUsuario;
+        this.items = items;
+    }
 }

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unieventos.modelo;
+package co.edu.uniquindio.unieventos.modelo.enums;
 
 public enum TipoCupon {
 
