@@ -22,7 +22,7 @@ public class Cuenta {
     @EqualsAndHashCode.Include
     private String id;
 
-    private ObjectId idString;
+    private Usuario usuario;
     private String email;
     private String password;
     private CodigoValidacion codValidacionPassword;
@@ -30,4 +30,16 @@ public class Cuenta {
     private LocalDateTime fechaRegistro;
     private Rol rol;
     private EstadoCuenta estado;
+
+    @Builder
+    public Cuenta(Usuario usuario, String email, String password, CodigoValidacion codValidacionPassword, CodigoValidacion codValidacionRegistro, LocalDateTime fechaRegistro, Rol rol, EstadoCuenta estado) {
+        this.usuario = usuario;
+        this.email = email;
+        this.password = password;
+        this.codValidacionPassword = codValidacionPassword;
+        this.codValidacionRegistro = codValidacionRegistro;
+        this.fechaRegistro = fechaRegistro;
+        this.rol = rol;
+        this.estado = estado;
+    }
 }
