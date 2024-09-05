@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unieventos.modelo.documentos;
+package co.edu.uniquindio.unieventos.modelo.vo;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

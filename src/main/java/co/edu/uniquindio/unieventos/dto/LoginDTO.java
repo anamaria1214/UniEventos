@@ -1,4 +1,4 @@
 package co.edu.uniquindio.unieventos.dto;
 
-public record LoginDTO() {
+public record LoginDTO(String correo, String password) {
 }

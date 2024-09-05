@@ -1,7 +1,6 @@
 package co.edu.uniquindio.unieventos;
 
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
-import co.edu.uniquindio.unieventos.modelo.documentos.Usuario;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

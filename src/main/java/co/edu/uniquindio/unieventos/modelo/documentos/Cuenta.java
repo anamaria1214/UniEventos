@@ -3,8 +3,8 @@ package co.edu.uniquindio.unieventos.modelo.documentos;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
+import co.edu.uniquindio.unieventos.modelo.vo.Usuario;
 import lombok.*;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

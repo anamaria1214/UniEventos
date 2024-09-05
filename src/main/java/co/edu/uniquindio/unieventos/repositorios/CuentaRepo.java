@@ -10,4 +10,9 @@ import java.util.Optional;
 @Repository
 public interface CuentaRepo extends MongoRepository<Cuenta, String> {
 
+    @Query("{email:  ?0, password: ?1}")
+    Optional<Cuenta> validarDatosLogin(String email, String password);
+
+    @Query("{email:  ?0}")
+    Optional<Cuenta> buscarEmail(String email);
 }
