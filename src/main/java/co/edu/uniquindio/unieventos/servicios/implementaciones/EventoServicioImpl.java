@@ -30,6 +30,11 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
+    public String editarEvento(String id) throws Exception {
+        return "";
+    }
+
+
      public String editarEvento(EditarEventoDTO editarEventoDTO) throws Exception {
         Optional<Evento> eventoOpcional = eventoRepo.findById(editarEventoDTO.id());
          if(eventoOpcional.isEmpty()){
@@ -43,7 +48,7 @@ public class EventoServicioImpl implements EventoServicio {
          evento.setImagenLocalidades(editarEventoDTO.imagenLocalidades());
          evento.setLocalidades(editarEventoDTO.localidades());
          
-         return "Evento editado correctamente"
+         return "Evento editado correctamente";
 
         }
 
