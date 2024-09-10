@@ -42,7 +42,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuenta.setRol(Rol.CLIENTE);
         cuenta.setFechaRegistro(LocalDateTime.now());
         cuenta.setEstado(EstadoCuenta.INACTIVO);
-       // cuenta.setUsuario(idUsuario);
+       // cuenta.setUsuario(idCuenta);
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
         cuentaRepo.save(cuenta);
 

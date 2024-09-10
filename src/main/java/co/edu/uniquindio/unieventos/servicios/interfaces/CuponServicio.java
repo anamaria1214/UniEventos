@@ -10,4 +10,6 @@ public interface CuponServicio {
     String redimirCupon(String codigo) throws Exception;
 
     String enviarCupon(CuponEnviadoDTO cuponEnviado) throws Exception;
+
+ 
 }

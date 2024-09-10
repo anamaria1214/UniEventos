@@ -22,7 +22,7 @@ public class Orden {
     @EqualsAndHashCode.Include
     private String id;
 
-    private ObjectId idCliente;
+    private ObjectId idCuenta;
     private ObjectId idCupon;
     private LocalDateTime fecha;
     private String CodigoPasarela;

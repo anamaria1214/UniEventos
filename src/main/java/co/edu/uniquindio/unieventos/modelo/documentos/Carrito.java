@@ -22,13 +22,13 @@ public class Carrito {
     private String id;
 
     private LocalDateTime fechaUltimaAct;
-    private ObjectId idUsuario;
+    private ObjectId idCuenta;
     private List<DetalleCarrito> items;
 
     @Builder
-    public Carrito(LocalDateTime fechaUltimaAct, ObjectId idUsuario, List<DetalleCarrito> items) {
+    public Carrito(LocalDateTime fechaUltimaAct, ObjectId idCuenta, List<DetalleCarrito> items) {
         this.fechaUltimaAct = fechaUltimaAct;
-        this.idUsuario = idUsuario;
+        this.idCuenta = idCuenta;
         this.items = items;
     }
 }

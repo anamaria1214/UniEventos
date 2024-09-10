@@ -26,4 +26,14 @@ public class Cupon {
     private String codigo;
     private EstadoCupon estado;
     private TipoCupon tipo;
+
+    public Cupon(String nombre, float descuento, LocalDateTime fechaVencimiento, String codigo, EstadoCupon estado, TipoCupon tipo){
+        this.nombre= nombre;
+        this.descuento= descuento;
+        this.fechaVencimiento= fechaVencimiento;
+        this.codigo=codigo;
+        this.estado= estado;
+        this.tipo= tipo;
+    }
+
 }
