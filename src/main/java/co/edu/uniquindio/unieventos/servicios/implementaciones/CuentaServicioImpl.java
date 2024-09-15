@@ -22,6 +22,7 @@ public class CuentaServicioImpl implements CuentaServicio {
 
     private final CuentaRepo cuentaRepo;
 
+
     public CuentaServicioImpl(CuentaRepo cuentaRepo){
         this.cuentaRepo=cuentaRepo;
     }
@@ -45,6 +46,8 @@ public class CuentaServicioImpl implements CuentaServicio {
        // cuenta.setUsuario(idCuenta);
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
         cuentaRepo.save(cuenta);
+
+        //emailServicio.
 
         return null;
     }
