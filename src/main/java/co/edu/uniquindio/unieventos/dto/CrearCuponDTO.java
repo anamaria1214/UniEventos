@@ -23,7 +23,5 @@ public class CrearCuponDTO {
          @NotBlank (message="El código es obligatorio")
          String codigo;
          @NotBlank (message="El estado es obligatorio")
-         EstadoCupon estado;
-         @NotBlank (message="El estado es obligatorio")
          TipoCupon tipo;
 }

@@ -4,6 +4,7 @@ import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
+import co.edu.uniquindio.unieventos.modelo.enums.EstadoCupon;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class CuponServicioImpl implements CuponServicio {
 
     @Override
     public String crearCupon(CrearCuponDTO cuponDTO) throws Exception {
-        Cupon cupon= new Cupon(cuponDTO.getNombre(),cuponDTO.getDescuento(),cuponDTO.getFechaVencimiento(),cuponDTO.getCodigo(), cuponDTO.getEstado(),cuponDTO.getTipo());
+        Cupon cupon= new Cupon(cuponDTO.getNombre(),cuponDTO.getDescuento(),cuponDTO.getFechaVencimiento(),cuponDTO.getCodigo(), EstadoCupon.DISPONIBLE,cuponDTO.getTipo());
         Cupon cuponCreado= cuponRepository.save(cupon);
         return "Se ha creado el cupón correctamente";
     }
@@ -53,9 +54,22 @@ public class CuponServicioImpl implements CuponServicio {
         return "Se ha cambiado el estado a NO-DISPONIBLE";
     }
 
+    /**
+     * Se obtiene el cupón por su código, y al total de la venta se le aplica el descuento y se guarda en una nueva variable(Posible futuro retorno)
+     * @param codigo
+     * @param total
+     * @return
+     * @throws Exception
+     */
     @Override
-    public String redimirCupon(String codigo) throws Exception {
-        return null;
+    public String redimirCupon(String codigo, float total) throws Exception {
+        Cupon cuponARedimir= getCuponById(codigo);
+        if (cuponARedimir==null){
+            throw new Exception("No hay ningún cupón con el código ingresado");
+        }
+        float descuento= cuponARedimir.getDescuento()/100;
+        float nuevoTotal= total - (total*descuento);
+        return "Se ha redimido el cupón correctamente";
     }
 
     @Override
