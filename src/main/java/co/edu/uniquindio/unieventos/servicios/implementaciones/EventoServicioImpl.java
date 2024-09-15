@@ -47,7 +47,8 @@ public class EventoServicioImpl implements EventoServicio {
          evento.setImagenPortada(editarEventoDTO.imagenPortada());
          evento.setImagenLocalidades(editarEventoDTO.imagenLocalidades());
          evento.setLocalidades(editarEventoDTO.localidades());
-         
+         //Guardar el cambio
+         Evento eventoActualizado= eventoRepo.save(evento);
          return "Evento editado correctamente";
 
         }

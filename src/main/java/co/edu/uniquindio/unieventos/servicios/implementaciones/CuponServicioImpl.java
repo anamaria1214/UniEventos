@@ -9,6 +9,8 @@ import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CuponServicioImpl implements CuponServicio {
 
@@ -26,9 +28,13 @@ public class CuponServicioImpl implements CuponServicio {
     }
 
     @Override
-    public String editarCupon(String id, EditarCuponDTO cuponDTO) throws Exception {
-        Cupon cupon= getCuponById(id);
+    public String editarCupon(String codigo, EditarCuponDTO cuponDTO) throws Exception {
+        Optional<Cupon> cuponOptional= cuponRepository.findById(codigo);
+        if (cuponOptional.isEmpty()){
+            throw new Exception("No existe el cupon");
+        }
         //Campos que se pueden editar
+        Cupon cupon= cuponOptional.get();
         cupon.setNombre(cuponDTO.getNombre());
         cupon.setDescuento(cuponDTO.getDescuento());
         cupon.setFechaVencimiento(cuponDTO.getFechaVencimiento());
@@ -40,14 +46,14 @@ public class CuponServicioImpl implements CuponServicio {
 
     /**
      *
-     * @param id
+     * @param codigo
      * @param cuponDTO
      * @return
      * @throws Exception
      */
     @Override
-    public String eliminarCupon(String id, EliminarCuponDTO cuponDTO) throws Exception {
-        Cupon cupon= getCuponById(id);
+    public String eliminarCupon(String codigo, EliminarCuponDTO cuponDTO) throws Exception {
+        Cupon cupon= getCuponByCodigo(codigo);
         //Camniamos el estado (No se elimina)
         cupon.setEstado(cuponDTO.getEstado());
         Cupon estadoCupon= cuponRepository.save(cupon);
@@ -63,7 +69,7 @@ public class CuponServicioImpl implements CuponServicio {
      */
     @Override
     public String redimirCupon(String codigo, float total) throws Exception {
-        Cupon cuponARedimir= getCuponById(codigo);
+        Cupon cuponARedimir= getCuponByCodigo(codigo);
         if (cuponARedimir==null){
             throw new Exception("No hay ningún cupón con el código ingresado");
         }
@@ -79,8 +85,8 @@ public class CuponServicioImpl implements CuponServicio {
 
     //Private methods
 
-    private Cupon getCuponById(String id) throws Exception {
-        return cuponRepository.findById(id).orElseThrow(()->new Exception("No se ha encontrado"));
+    private Cupon getCuponByCodigo(String codigo) throws Exception {
+        return cuponRepository.findById(codigo).orElseThrow(()->new Exception("No se ha encontrado"));
     }
 
 
