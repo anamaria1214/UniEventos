@@ -14,4 +14,5 @@ public interface CuentaServicio{
     String enviarCodigoRecuperacion(String correo);
     String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
     String login(LoginDTO loginDTO) throws Exception;
+    String encriptarPassword(String password) throws Exception;
 }

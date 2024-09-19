@@ -140,4 +140,9 @@ public class CuentaServicioImpl implements CuentaServicio {
         Optional<Cuenta> cuentaOpcional= cuentaRepo.validarDatosLogin(loginDTO.correo(), loginDTO.password());
         return "TOKEN_JWT";
     }
+
+    @Override
+    public String encriptarPassword(String password) throws Exception {
+        return null;
+    }
 }
