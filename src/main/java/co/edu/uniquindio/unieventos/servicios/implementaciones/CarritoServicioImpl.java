@@ -35,6 +35,9 @@ public class CarritoServicioImpl implements CarritoServicio {
 
     @Override
     public String vaciarCarrito(String id) throws Exception {
+
+        carritoRepo.deleteById(id);
+
         return null;
     }
 
@@ -51,8 +54,7 @@ public class CarritoServicioImpl implements CarritoServicio {
             }
         }
 
-
-        return null;
+        return "Elemento borrado correctamente";
     }
 
     @Override
@@ -79,6 +81,14 @@ public class CarritoServicioImpl implements CarritoServicio {
 
         Optional<Carrito> carritoOptional= carritoRepo.findById(carritoDTO.idCarrito());
 
-        return null;
+        Carrito carrito= carritoOptional.get();
+
+        for(int i=0;i<carrito.getItems().size();i++){
+            if(carrito.getItems().get(i).getIdEvento().equals(carritoDTO.idEvento())){
+                carrito.getItems().get(i).setCantidad(carritoDTO.nuevaCantidad());
+            }
+        }
+
+        return "El carrito se ha editado corectamente";
     }
 }
