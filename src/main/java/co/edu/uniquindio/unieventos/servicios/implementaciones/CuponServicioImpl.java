@@ -3,6 +3,7 @@ import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
 import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuponException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCupon;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
@@ -28,13 +29,12 @@ public class CuponServicioImpl implements CuponServicio {
     }
 
     @Override
-    public String editarCupon(String codigo, EditarCuponDTO cuponDTO) throws Exception {
-        Optional<Cupon> cuponOptional= cuponRepository.findById(codigo);
-        if (cuponOptional.isEmpty()){
-            throw new Exception("No existe el cupon");
+    public String editarCupon(String codigo, EditarCuponDTO cuponDTO) throws CuponException {
+        Cupon cupon= getCuponByCodigo(codigo);
+        if (cupon==null){
+            throw new CuponException("No existe el cupon");
         }
         //Campos que se pueden editar
-        Cupon cupon= cuponOptional.get();
         cupon.setNombre(cuponDTO.getNombre());
         cupon.setDescuento(cuponDTO.getDescuento());
         cupon.setFechaVencimiento(cuponDTO.getFechaVencimiento());
@@ -83,10 +83,10 @@ public class CuponServicioImpl implements CuponServicio {
         return null;
     }
 
-    //Private methods
+    //-----------------------Metodos privados------------------------------
 
-    private Cupon getCuponByCodigo(String codigo) throws Exception {
-        return cuponRepository.findById(codigo).orElseThrow(()->new Exception("No se ha encontrado"));
+    private Cupon getCuponByCodigo(String codigo) throws CuponException {
+        return cuponRepository.findById(codigo).orElseThrow(()->new CuponException("No se ha encontrado ningún cupon"));
     }
 
 
