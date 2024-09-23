@@ -7,14 +7,17 @@ import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.modelo.vo.Pago;
 import co.edu.uniquindio.unieventos.repositorios.OrdenRepo;
+import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +28,12 @@ import java.util.Map;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class OrdenServicioImpl implements OrdenServicio {
 
     private final OrdenRepo ordenRepo;
+    private final EventoServicio eventoServicio;
 
-    public OrdenServicioImpl(OrdenRepo ordenRepo) {
-        this.ordenRepo = ordenRepo;
-    }
 
     @Override
     public Preference realizarPago(String idOrden) throws Exception {
@@ -80,7 +82,7 @@ public class OrdenServicioImpl implements OrdenServicio {
                 .backUrls(backUrls)
                 .items(itemsPasarela)
                 .metadata(Map.of("id_orden", ordenGuardada.getId()))
-                .notificationUrl("URL NOTIFICACION")
+                .notificationUrl("https://dfb5-189-50-209-152.ngrok-free.app")
                 .build();
 
 

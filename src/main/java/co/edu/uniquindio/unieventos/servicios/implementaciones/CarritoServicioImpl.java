@@ -24,11 +24,9 @@ public class CarritoServicioImpl implements CarritoServicio {
     }
 
     public Carrito devolverCarrito(String id) throws Exception{
-
         try{
             Optional<Carrito> carritoOptional= carritoRepo.findById(id);
-            Carrito carrito= carritoOptional.get();
-            return carrito;
+            return carritoOptional.get();
         }catch(Exception e){
             throw new Exception("Carrito no encontrado");
         }
