@@ -39,7 +39,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuenta.setRol(Rol.CLIENTE);
         cuenta.setFechaRegistro(LocalDateTime.now());
         cuenta.setEstado(EstadoCuenta.INACTIVO);
-       // cuenta.setUsuario(idCuenta);
+        // cuenta.setUsuario(idCuenta);
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
         cuentaRepo.save(cuenta);
 
@@ -132,7 +132,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
 
     //---------------------Metodos de autenticación y JWT-----------------------------
-    private String encriptarPassword(String password){
+    public String encriptarPassword(String password){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode( password );
     }

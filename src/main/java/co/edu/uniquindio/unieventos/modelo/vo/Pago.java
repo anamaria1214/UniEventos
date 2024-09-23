@@ -1,7 +1,14 @@
 package co.edu.uniquindio.unieventos.modelo.vo;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Pago {
 
     private String id;
