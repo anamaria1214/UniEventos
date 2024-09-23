@@ -1,9 +1,6 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
-import co.edu.uniquindio.unieventos.dto.CambiarPasswordDTO;
-import co.edu.uniquindio.unieventos.dto.InfoAdicionalDTO;
-import co.edu.uniquindio.unieventos.dto.CrearCuentaRegistroDTO;
-import co.edu.uniquindio.unieventos.dto.LoginDTO;
+import co.edu.uniquindio.unieventos.dto.*;
 
 public interface CuentaServicio{
 
@@ -13,5 +10,5 @@ public interface CuentaServicio{
     InfoAdicionalDTO obtenerInformacionCuenta(String id)  throws Exception;
     String enviarCodigoRecuperacion(String correo);
     String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
-    String login(LoginDTO loginDTO) throws Exception;
+    TokenDTO login(LoginDTO loginDTO) throws Exception;
 }
