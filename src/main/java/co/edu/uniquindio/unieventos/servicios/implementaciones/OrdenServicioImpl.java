@@ -46,7 +46,7 @@ public class OrdenServicioImpl implements OrdenServicio {
 
 
             // Obtener el evento y la localidad del ítem
-            Evento evento = eventoServicio.obtenerEvento(item.getCodigoEvento().toString());
+            Evento evento = eventoServicio.obtenerEventos (item.getCodigoEvento().toString());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
 
 
