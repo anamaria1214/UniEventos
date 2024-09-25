@@ -107,4 +107,9 @@ public class EventoServicioImpl implements EventoServicio {
 
         return null;
     }
+
+    @Override
+    public Evento obtenerEventos(String id) throws Exception {
+        return eventoRepo.findById(id).orElseThrow( () -> new Exception("") );
+    }
 }

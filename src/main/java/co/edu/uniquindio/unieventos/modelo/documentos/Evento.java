@@ -53,4 +53,9 @@ public class Evento {
         this.imagenLocalidades = imagenLocalidades;
         this.localidades = new ArrayList<>();
     }
+
+    public Localidad obtenerPorNombre(String nombre){
+        //Hacer un for, filter, por el nombre
+        return null;
+    }
 }
