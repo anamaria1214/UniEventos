@@ -28,6 +28,7 @@ public class EmailServicioImpl implements EmailServicio {
                 .buildEmail();
 
 
+
         try (Mailer mailer = MailerBuilder
                 .withSMTPServer("SMTP_HOST", 80, "SMTP_USERNAME", "SMTP_PASSWORD")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
