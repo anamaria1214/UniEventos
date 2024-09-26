@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unieventos.modelo.vo;
 
+import com.mercadopago.resources.payment.Payment;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,4 +20,6 @@ public class Pago {
     private LocalDateTime fecha;
     private float valorTransaccion;
     private String estado;
+
+
 }

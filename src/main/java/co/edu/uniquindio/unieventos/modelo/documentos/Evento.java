@@ -54,7 +54,7 @@ public class Evento {
         this.localidades = new ArrayList<>();
     }
 
-    public Localidad obtenerPorNombre(String nombre){
+    public Localidad obtenerLocalidad(String nombre){
         //Hacer un for, filter, por el nombre
         return null;
     }
