@@ -1,12 +1,13 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 
 public interface CuentaServicio{
 
-    String crearCuenta(CrearCuentaRegistroDTO cuenta) throws Exception;
-    String editarCuenta(InfoAdicionalDTO cuenta) throws Exception;
-    String eliminarCuenta(String id) throws Exception;
+    Cuenta crearCuenta(CrearCuentaRegistroDTO cuenta) throws Exception;
+    Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws Exception;
+    Cuenta eliminarCuenta(String id) throws Exception;
     InfoAdicionalDTO obtenerInformacionCuenta(String id)  throws Exception;
     String enviarCodigoRecuperacion(String correo);
     String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;

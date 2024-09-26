@@ -31,7 +31,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
     //Metodos de la cuenta
     @Override
-    public String crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws Exception {
+    public Cuenta crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws Exception {
 
         Cuenta cuenta= new Cuenta();
         cuenta.setEmail(cuentaDTO.correo());
@@ -41,40 +41,34 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuenta.setEstado(EstadoCuenta.INACTIVO);
         // cuenta.setUsuario(idCuenta);
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
-        cuentaRepo.save(cuenta);
-
+        return cuentaRepo.save(cuenta);
         //emailServicio.
 
-        return null;
     }
 
     @Override
-    public String editarCuenta(InfoAdicionalDTO cuenta) throws Exception {
+    public Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws CuentaException {
 
-        Optional<Cuenta> cuentaOpcional= cuentaRepo.findById(cuenta.id());
+        Cuenta cuentaUsuario=obtenerCuenta(cuenta.id());
 
         //Validacion
-
-        Cuenta cuentaUsuario= cuentaOpcional.get();
         cuentaUsuario.getUsuario().setNombre(cuenta.nombre());
         cuentaUsuario.getUsuario().setDireccion(cuenta.direccion());
         cuentaUsuario.getUsuario().setTelefono(cuenta.telefono());
         cuentaUsuario.setPassword(cuenta.password());
 
+        return cuentaRepo.save(cuentaUsuario);
 
-        return "Cuenta editada exitosamente";
     }
 
     @Override
-    public String eliminarCuenta(String id) throws Exception {
+    public Cuenta eliminarCuenta(String id) throws CuentaException {
 
-        Optional<Cuenta> cuentaOpcional= cuentaRepo.findById(id);
+        Cuenta cuentaUsuario=obtenerCuenta(id);
 
         //Validacion
-
-        Cuenta cuentaUsuario= cuentaOpcional.get();
         cuentaUsuario.setEstado(EstadoCuenta.ELIMINADA);
-        return "Se eliminó correctamente";
+        return cuentaRepo.save(cuentaUsuario);
     }
 
     @Override

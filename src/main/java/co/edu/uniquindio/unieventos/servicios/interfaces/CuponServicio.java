@@ -4,16 +4,17 @@ import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
 import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 
 public interface CuponServicio {
 
-    String crearCupon(CrearCuponDTO cupon) throws Exception;
+    Cupon crearCupon(CrearCuponDTO cupon) throws Exception;
 
-    String editarCupon(String id, EditarCuponDTO cuponDTO) throws Exception;
+    Cupon editarCupon(String id, EditarCuponDTO cuponDTO) throws Exception;
 
-    String eliminarCupon(String id, EliminarCuponDTO cuponDTO) throws Exception;
+    Cupon eliminarCupon(String id, EliminarCuponDTO cuponDTO) throws Exception;
 
-    String redimirCupon(String codigo, float total) throws Exception;
+    float redimirCupon(String codigo, float total) throws Exception;
 
     String enviarCupon(CuponEnviadoDTO cuponEnviado) throws Exception;
 

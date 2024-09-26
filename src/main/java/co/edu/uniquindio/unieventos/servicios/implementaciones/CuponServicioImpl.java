@@ -10,8 +10,6 @@ import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CuponServicioImpl implements CuponServicio {
 
@@ -22,14 +20,14 @@ public class CuponServicioImpl implements CuponServicio {
     }
 
     @Override
-    public String crearCupon(CrearCuponDTO cuponDTO) throws Exception {
+    public Cupon crearCupon(CrearCuponDTO cuponDTO) throws Exception {
         Cupon cupon= new Cupon(cuponDTO.getNombre(),cuponDTO.getDescuento(),cuponDTO.getFechaVencimiento(),cuponDTO.getCodigo(), EstadoCupon.DISPONIBLE,cuponDTO.getTipo());
-        Cupon cuponCreado= cuponRepository.save(cupon);
-        return "Se ha creado el cupón correctamente";
+        return  cuponRepository.save(cupon);
+
     }
 
     @Override
-    public String editarCupon(String codigo, EditarCuponDTO cuponDTO) throws CuponException {
+    public Cupon editarCupon(String codigo, EditarCuponDTO cuponDTO) throws CuponException {
         Cupon cupon= getCuponByCodigo(codigo);
         if (cupon==null){
             throw new CuponException("No existe el cupon");
@@ -39,9 +37,8 @@ public class CuponServicioImpl implements CuponServicio {
         cupon.setDescuento(cuponDTO.getDescuento());
         cupon.setFechaVencimiento(cuponDTO.getFechaVencimiento());
         //Se guarda la nueva información
-        Cupon cuponActualizado= cuponRepository.save(cupon);
+        return  cuponRepository.save(cupon);
 
-        return "Se ha actualizado el cupón correctamente";
     }
 
     /**
@@ -52,12 +49,12 @@ public class CuponServicioImpl implements CuponServicio {
      * @throws Exception
      */
     @Override
-    public String eliminarCupon(String codigo, EliminarCuponDTO cuponDTO) throws Exception {
+    public Cupon eliminarCupon(String codigo, EliminarCuponDTO cuponDTO) throws Exception {
         Cupon cupon= getCuponByCodigo(codigo);
         //Camniamos el estado (No se elimina)
         cupon.setEstado(cuponDTO.getEstado());
-        Cupon estadoCupon= cuponRepository.save(cupon);
-        return "Se ha cambiado el estado a NO-DISPONIBLE";
+        return cuponRepository.save(cupon);
+
     }
 
     /**
@@ -68,14 +65,13 @@ public class CuponServicioImpl implements CuponServicio {
      * @throws Exception
      */
     @Override
-    public String redimirCupon(String codigo, float total) throws Exception {
+    public float redimirCupon(String codigo, float total) throws Exception {
         Cupon cuponARedimir= getCuponByCodigo(codigo);
         if (cuponARedimir==null){
             throw new Exception("No hay ningún cupón con el código ingresado");
         }
         float descuento= cuponARedimir.getDescuento()/100;
-        float nuevoTotal= total - (total*descuento);
-        return "Se ha redimido el cupón correctamente";
+        return total - (total*descuento);//Retorna el nuevo valor
     }
 
     @Override
