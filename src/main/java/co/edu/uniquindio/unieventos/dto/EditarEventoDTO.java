@@ -2,6 +2,8 @@ package co.edu.uniquindio.unieventos.dto;
 
 import co.edu.uniquindio.unieventos.modelo.enums.TipoEvento;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,4 +13,9 @@ public record EditarEventoDTO(
         LocalDateTime fecha, TipoEvento tipo, String imagenPortada, String imagenLocalidades,
         List<Localidad> localidades) {
 
+
+    @Override
+    public String nombre() {
+        return nombre;
+    }
 }

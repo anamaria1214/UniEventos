@@ -9,9 +9,9 @@ import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.repositorios.OrdenRepo;
-import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
-import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
+import co.edu.uniquindio.unieventos.servicios.implementaciones.EventoServicioImpl;
 import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
+import co.edu.uniquindio.unieventos.servicios.implementaciones.CarritoServicioImpl;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -26,14 +26,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrdenServicioImpl implements OrdenServicio {
 
-    private final CarritoServicio carritoServicio;
-    private final EventoServicio eventoServicio;
+    private final CarritoServicioImpl carritoImpl;
+    private final EventoServicioImpl eventoServicio;
     private final OrdenRepo ordenRepo;
 
     @Override
     public void crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {
 
-        Carrito carrito = carritoServicio.obtenerCarrito(crearOrdenDTO.idCarrito());
+        Carrito carrito = carritoImpl.obtenerCarrito(crearOrdenDTO.idCarrito());
         List<DetalleCarrito> items = carrito.getItems();
         List<DetalleOrden> itemsOrden = new ArrayList<>();
         float total = 0;
@@ -46,7 +46,7 @@ public class OrdenServicioImpl implements OrdenServicio {
             }else{
                 //actualizar entradas vendidas
                 total += item.getCantidad()*localidad.getPrecio();
-                itemsOrden.add(new DetalleOrden(new ObjectId(), ));
+                //itemsOrden.add(new DetalleOrden(new ObjectId()  )); //Descomentar para seguir trabajando luego
             }
             //validar que el numero de entradas este disponible
         }

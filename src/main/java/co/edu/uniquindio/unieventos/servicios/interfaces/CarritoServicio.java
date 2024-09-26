@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.CarritoDTO;
+import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface CarritoServicio {
 
     String editarCantidad(CarritoDTO carritoDTO) throws Exception;
 
+    Carrito obtenerCarrito(String id);
 }

@@ -1,18 +1,18 @@
 package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 import co.edu.uniquindio.unieventos.dto.CarritoDTO;
-import co.edu.uniquindio.unieventos.dto.ItemEventoDTO;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
-import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
-import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.repositorios.CarritoRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@Transactional
 public class CarritoServicioImpl implements CarritoServicio {
 
     private final CarritoRepo carritoRepo;
@@ -91,4 +91,10 @@ public class CarritoServicioImpl implements CarritoServicio {
 
         return "El carrito se ha editado corectamente";
     }
+
+    @Override
+    public Carrito obtenerCarrito(String id){
+        return carritoRepo.findById(id).get();
+    }
+
 }

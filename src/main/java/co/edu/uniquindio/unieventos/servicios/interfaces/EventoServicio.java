@@ -7,11 +7,11 @@ import java.util.List;
 public interface EventoServicio {
 
 
-    String crearEvento(CrearEventoDTO crearEventoDTO) throws Exception;
+    Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception;
 
-    String editarEvento(String id) throws Exception;
+    Evento editarEvento(EditarEventoDTO editarEventoDTO) throws Exception;
 
-    String eliminarEvento(String id) throws Exception;
+    Evento eliminarEvento(String id) throws Exception;
 
     InformacionEventoDTO obtenerInformacionEvento(String id) throws Exception;
 
@@ -20,5 +20,7 @@ public interface EventoServicio {
     List<ItemEventoDTO> filtrarEventos(FiltroEventoDTO filtroEventoDTO);
 
     Evento obtenerEventos(String id) throws Exception;
+
+    List<Evento> getAll();
 
 }

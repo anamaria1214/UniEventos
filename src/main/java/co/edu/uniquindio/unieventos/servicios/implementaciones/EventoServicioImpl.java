@@ -1,6 +1,7 @@
     package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.exceptions.EventoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
@@ -23,24 +24,18 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public String crearEvento(CrearEventoDTO crearEventoDTO) throws Exception {
+    public Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception {
         Evento evento= new Evento(crearEventoDTO.getNombre(),crearEventoDTO.getDescripcion(),crearEventoDTO.getDireccion(), crearEventoDTO.getCiudad(), crearEventoDTO.getFecha(),EstadoEvento.ACTIVO, crearEventoDTO.getTipo(),crearEventoDTO.getImagenPortada(),crearEventoDTO.getImagenLocalidades());
-        Evento eventoCreado =  eventoRepo.save(evento);
-        return "Se ha creado el evento correctamente ";
+        return  eventoRepo.save(evento);
+
     }
 
     @Override
-    public String editarEvento(String id) throws Exception {
-        return "";
-    }
-
-
-     public String editarEvento(EditarEventoDTO editarEventoDTO) throws Exception {
-        Optional<Evento> eventoOpcional = eventoRepo.findById(editarEventoDTO.id());
-         if(eventoOpcional.isEmpty()){
-            throw new Exception("El evento no existe");
+    public Evento editarEvento(EditarEventoDTO editarEventoDTO) throws EventoException {
+        Evento evento = obtenerEventos(editarEventoDTO.id());
+         if(evento==null){
+            throw new EventoException("El evento no existe");
          }
-         Evento evento = eventoOpcional.get();
          evento.setNombre(editarEventoDTO.nombre());
          evento.setDescripcion(editarEventoDTO.descripcion());
          evento.setDireccion(editarEventoDTO.direccion()  );
@@ -48,19 +43,16 @@ public class EventoServicioImpl implements EventoServicio {
          evento.setImagenLocalidades(editarEventoDTO.imagenLocalidades());
          evento.setLocalidades(editarEventoDTO.localidades());
          //Guardar el cambio
-         Evento eventoActualizado= eventoRepo.save(evento);
-         return "Evento editado correctamente";
+         return  eventoRepo.save(evento);
 
         }
 
     @Override
-    public String eliminarEvento(String id) throws Exception {
+    public Evento eliminarEvento(String id) throws EventoException {
 
-        Optional<Evento> eventoOptional= eventoRepo.findById(id);
-
-        Evento evento= eventoOptional.get();
+        Evento evento= obtenerEventos(id);
         evento.setEstado(EstadoEvento.INACTIVO);
-        return "El evento se ha eliminado correctamente";
+        return eventoRepo.save(evento);//Se guarda el cambio de estado
     }
 
     @Override
@@ -109,7 +101,14 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public Evento obtenerEventos(String id) throws Exception {
-        return eventoRepo.findById(id).orElseThrow( () -> new Exception("") );
+    public Evento obtenerEventos(String id) throws EventoException {
+        return eventoRepo.findById(id).orElseThrow( () -> new EventoException("El evento no existe") );
     }
+
+    @Override
+    public List<Evento> getAll() {
+        return eventoRepo.findAll();
+    }
+
+
 }
