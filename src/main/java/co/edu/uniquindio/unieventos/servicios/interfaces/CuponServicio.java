@@ -13,7 +13,7 @@ public interface CuponServicio {
 
     Cupon editarCupon(String id, EditarCuponDTO cuponDTO) throws Exception;
 
-    Cupon eliminarCupon(String id, EliminarCuponDTO cuponDTO) throws Exception;
+    Cupon eliminarCupon(String id) throws CuponException;
 
     float redimirCupon(String codigo, float total) throws Exception;
 

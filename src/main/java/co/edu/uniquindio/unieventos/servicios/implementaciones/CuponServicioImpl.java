@@ -47,18 +47,17 @@ public class CuponServicioImpl implements CuponServicio {
     /**
      *
      * @param codigo
-     * @param cuponDTO
      * @return
      * @throws Exception
      */
     @Override
-    public Cupon eliminarCupon(String codigo, EliminarCuponDTO cuponDTO) throws Exception {
+    public Cupon eliminarCupon(String codigo) throws CuponException {
         Cupon cupon= getCuponByCodigo(codigo);
         if(cupon==null){
             throw new CuponException("No existe el cupón");
         }
         //Camniamos el estado (No se elimina)
-        cupon.setEstado(cuponDTO.getEstado());
+        cupon.setEstado(EstadoCupon.NO_DISPONIBLE);
         return cuponRepository.save(cupon);
 
     }

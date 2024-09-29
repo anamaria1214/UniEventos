@@ -73,13 +73,12 @@ public class CuponController {
     /**
      * Metodo con el que "eliminamos" el cupon
      * @param id
-     * @param cuponDTO
      * @return
      * @throws Exception
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageDTO> delete(@PathVariable("id") String id, @Valid @RequestBody EliminarCuponDTO cuponDTO) throws Exception {
-        Cupon cuponEliminar= cuponServicio.eliminarCupon(id,cuponDTO);
+    public ResponseEntity<MessageDTO> delete(@PathVariable("id") String id) throws Exception {
+        Cupon cuponEliminar= cuponServicio.eliminarCupon(id);
         String message= "Cupón "+ cuponEliminar.getNombre() +" ha sido eliminado con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK,message));
     }
