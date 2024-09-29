@@ -28,7 +28,7 @@ public class CuponController {
      * Metodo para obtener todos los cupones disponibles
      * @return
      */
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<List<Cupon>> getAll(){
         return ResponseEntity.ok(cuponServicio.getAll());
     }

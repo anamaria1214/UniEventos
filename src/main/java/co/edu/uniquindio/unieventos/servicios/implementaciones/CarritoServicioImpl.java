@@ -37,8 +37,8 @@ public class CarritoServicioImpl implements CarritoServicio {
     @Override
     public String agregarEventoCarrito(CarritoDTO agregarCarrito) throws  Exception ,CarritoException {
         Carrito carrito= findById(agregarCarrito.idCarrito());
-        int entradasVendidas= eventoServicio.obtenerEventos(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getEntradasVendidas();
-        int capacidadMaxima= eventoServicio.obtenerEventos(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getCapacidadMaxima();
+        int entradasVendidas= eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getEntradasVendidas();
+        int capacidadMaxima= eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getCapacidadMaxima();
         boolean existe = false;
         if(agregarCarrito.nuevaCantidad()+entradasVendidas>capacidadMaxima){
             throw new CarritoException("Se ha excedido la capacidad máxima de entradas");
@@ -105,8 +105,8 @@ public class CarritoServicioImpl implements CarritoServicio {
         Carrito carrito= findById(carritoDTO.idCarrito());
         for(int i=0;i<carrito.getItems().size();i++){
             if(carrito.getItems().get(i).getIdEvento().equals(carritoDTO.idEvento())){
-                int nuevaCantidad= eventoServicio.obtenerEventos(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad()).getEntradasVendidas()+carritoDTO.nuevaCantidad()-carrito.getItems().get(i).getCantidad();
-                if(nuevaCantidad<=eventoServicio.obtenerEventos(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad()).getCapacidadMaxima()){
+                int nuevaCantidad= eventoServicio.obtenerEvento(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad()).getEntradasVendidas()+carritoDTO.nuevaCantidad()-carrito.getItems().get(i).getCantidad();
+                if(nuevaCantidad<=eventoServicio.obtenerEvento(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad()).getCapacidadMaxima()){
                     carrito.getItems().get(i).setCantidad(carritoDTO.nuevaCantidad());
                     break;
                 }else{
