@@ -4,6 +4,7 @@ import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
 import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuponException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 
 public interface CuponServicio {
@@ -18,5 +19,7 @@ public interface CuponServicio {
 
     String enviarCupon(CuponEnviadoDTO cuponEnviado) throws Exception;
 
- 
+    Cupon getCuponByCodigo(String codigo) throws CuponException;
+    
+    boolean verificarVigencia(Cupon cuponAux);
 }

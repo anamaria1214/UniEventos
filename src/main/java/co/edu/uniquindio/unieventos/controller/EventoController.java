@@ -39,7 +39,7 @@ public class EventoController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Evento> getOne(@PathVariable("id") String id) throws Exception {
-        return ResponseEntity.ok(eventoServicio.obtenerEventos(id));
+        return ResponseEntity.ok(eventoServicio.obtenerEvento(id));
     }
 
     @PostMapping

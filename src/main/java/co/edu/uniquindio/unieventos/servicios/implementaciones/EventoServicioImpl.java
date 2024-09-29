@@ -5,6 +5,7 @@ import co.edu.uniquindio.unieventos.exceptions.EventoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
+import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public Evento editarEvento(EditarEventoDTO editarEventoDTO) throws EventoException {
-        Evento evento = obtenerEventos(editarEventoDTO.id());
+        Evento evento = obtenerEvento(editarEventoDTO.id());
          if(evento==null){
             throw new EventoException("El evento no existe");
          }
@@ -51,7 +52,7 @@ public class EventoServicioImpl implements EventoServicio {
     @Override
     public Evento eliminarEvento(String id) throws EventoException {
 
-        Evento evento= obtenerEventos(id);
+        Evento evento= obtenerEvento(id);
         evento.setEstado(EstadoEvento.INACTIVO);
         return eventoRepo.save(evento);//Se guarda el cambio de estado
     }
@@ -102,13 +103,25 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public Evento obtenerEventos(String id) throws EventoException {
+    public Evento obtenerEvento(String id) throws EventoException {
         return eventoRepo.findById(id).orElseThrow( () -> new EventoException("El evento no existe") );
     }
 
     @Override
     public List<Evento> getAll() {
         return eventoRepo.findAll();
+    }
+
+    @Override
+    public void actualizarCapacidadLocalidad(Evento evento, String nombreLocalidad, int entradasVendidas) throws Exception {
+        Localidad localidad = evento.getLocalidades().stream().filter(l -> l.getNombre().equals(nombreLocalidad) ).findFirst().orElse(null);
+        if(localidad == null){
+            throw new Exception("No existe la localidad");
+        }
+
+        localidad.setEntradasVendidas(localidad.getEntradasVendidas()+entradasVendidas );
+        eventoRepo.save(evento);
+
     }
 
 

@@ -10,6 +10,8 @@ import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class CuponServicioImpl implements CuponServicio {
 
@@ -79,10 +81,13 @@ public class CuponServicioImpl implements CuponServicio {
         return null;
     }
 
-    //-----------------------Metodos privados------------------------------
-
-    private Cupon getCuponByCodigo(String codigo) throws CuponException {
+    @Override
+    public Cupon getCuponByCodigo(String codigo) throws CuponException {
         return cuponRepository.findById(codigo).orElseThrow(()->new CuponException("No se ha encontrado ningún cupon"));
+    }
+    @Override
+    public boolean verificarVigencia(Cupon cuponAux){
+        return cuponAux.getFechaVencimiento().isBefore(LocalDateTime.now());
     }
 
 

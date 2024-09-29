@@ -12,4 +12,6 @@ public interface OrdenServicio {
     Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception;
     Preference realizarPago(String idOrden) throws Exception;
     void recibirNotificacionMercadoPago(Map<String, Object> request);
+    void cancelarOrden(String idOrden) throws Exception;
+
 }

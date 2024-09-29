@@ -19,8 +19,9 @@ public interface EventoServicio {
 
     List<ItemEventoDTO> filtrarEventos(FiltroEventoDTO filtroEventoDTO);
 
-    Evento obtenerEventos(String id) throws Exception;
+    Evento obtenerEvento(String id) throws Exception;
 
     List<Evento> getAll();
 
+    void actualizarCapacidadLocalidad(Evento evento, String nombreLocalidad, int entradasVendidas) throws Exception;
 }

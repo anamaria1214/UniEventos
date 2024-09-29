@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 public class DetalleOrden {
 
     private ObjectId id;
-    private ObjectId idEvento;
+    private String idEvento;
     private String nombreLocalidad;
     private float precio;
     private int cantidad;

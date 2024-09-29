@@ -4,6 +4,7 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.documentos.Orden;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
@@ -11,9 +12,10 @@ import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.modelo.vo.Pago;
 import co.edu.uniquindio.unieventos.repositorios.OrdenRepo;
-import co.edu.uniquindio.unieventos.servicios.implementaciones.EventoServicioImpl;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
-import co.edu.uniquindio.unieventos.servicios.implementaciones.CarritoServicioImpl;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
@@ -38,10 +40,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OrdenServicioImpl implements OrdenServicio {
 
-    private final CarritoServicioImpl carritoImpl;
-    private final EventoServicioImpl eventoServicio;
+    private final CarritoServicio carritoImpl;
+    private final EventoServicio eventoServicio;
     private final OrdenRepo ordenRepo;
-
+    private final CuponServicio cuponServicio;
     @Override
     public Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {
 
@@ -50,27 +52,28 @@ public class OrdenServicioImpl implements OrdenServicio {
         List<DetalleOrden> itemsOrden = new ArrayList<>();
         float total = 0;
 
-        for(DetalleCarrito item : items) {
-            Evento evento = eventoServicio.obtenerEventos(item.getIdEvento());
-            Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());//Hay que hacer la logica de obtenerLocalidad
-            if( ! (localidad.getCapacidadMaxima() > localidad.getEntradasVendidas()+item.getCantidad()) ){
+        for (DetalleCarrito item : items) {
+            Evento evento = eventoServicio.obtenerEvento(item.getIdEvento());
+            Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
+            if (!(localidad.getCapacidadMaxima() > localidad.getEntradasVendidas() + item.getCantidad())) {
                 throw new Exception("No hay aforo disponible para la localidad elegida");
-            }else{
-                //actualizar entradas vendidas
-                total += item.getCantidad()*localidad.getPrecio();
-                //itemsOrden.add(new DetalleOrden(new ObjectId()  )); //Descomentar para seguir trabajando luego
+            } else {
+                total += item.getCantidad() * localidad.getPrecio();
+                itemsOrden.add(new DetalleOrden(new ObjectId(), item.getIdEvento(), item.getNombreLocalidad(), localidad.getPrecio(), item.getCantidad()));
+                eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), item.getCantidad());
             }
-            //validar que el numero de entradas este disponible
         }
-
-        //Buscar el cupon y validar que esté disponible y no esté vencido
-        //aplicar el descuento (si se puede)
-
+        Cupon cupon = cuponServicio.getCuponByCodigo(crearOrdenDTO.idCupon());
+        if (cupon != null) {
+            if (cuponServicio.verificarVigencia(cupon)) {
+                total = total * cupon.getDescuento() + total;
+            }
+        }
         Orden orden = new Orden();
         orden.setFecha(LocalDateTime.now());
         orden.setItems(itemsOrden);
-        //completar objeto con set
-
+        orden.setIdCuenta(carrito.getIdCuenta());
+        orden.setTotal(total);
         return ordenRepo.save(orden);
 
     }
@@ -85,7 +88,7 @@ public class OrdenServicioImpl implements OrdenServicio {
 
 
             // Obtener el evento y la localidad del ítem
-            Evento evento = eventoServicio.obtenerEventos(item.getIdEvento().toString());
+            Evento evento = eventoServicio.obtenerEvento(item.getIdEvento().toString());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
 
 
@@ -171,6 +174,11 @@ public class OrdenServicioImpl implements OrdenServicio {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void cancelarOrden(String idOrden) throws Exception {
 
     }
 
