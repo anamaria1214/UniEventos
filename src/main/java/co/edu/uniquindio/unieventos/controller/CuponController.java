@@ -38,7 +38,7 @@ public class CuponController {
      * @param id
      * @return
      */
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Cupon> getOne(@PathVariable ("id") String id){
         return ResponseEntity.ok(cuponServicio.getCuponByCodigo(id));
     }

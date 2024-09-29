@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
@@ -31,14 +32,14 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
     //Metodos de la cuenta
     @Override
-    public Cuenta crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws Exception {
+    public Cuenta crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException {
 
         Cuenta cuenta= new Cuenta();
         cuenta.setEmail(cuentaDTO.correo());
-        cuenta.setPassword(cuentaDTO.password());
+        cuenta.setPassword(encriptarPassword(cuentaDTO.password())); //Se encripta la contraseña
         cuenta.setRol(Rol.CLIENTE);
         cuenta.setFechaRegistro(LocalDateTime.now());
-        cuenta.setEstado(EstadoCuenta.INACTIVO);
+        cuenta.setEstado(EstadoCuenta.ACTIVO);
         // cuenta.setUsuario(idCuenta);
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
         return cuentaRepo.save(cuenta);
@@ -50,7 +51,9 @@ public class CuentaServicioImpl implements CuentaServicio {
     public Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws CuentaException {
 
         Cuenta cuentaUsuario=obtenerCuenta(cuenta.id());
-
+        if (cuentaUsuario==null){
+            throw new CuentaException("La cuenta no existe");
+        }
         //Validacion
         cuentaUsuario.getUsuario().setNombre(cuenta.nombre());
         cuentaUsuario.getUsuario().setDireccion(cuenta.direccion());
@@ -63,8 +66,10 @@ public class CuentaServicioImpl implements CuentaServicio {
 
     @Override
     public Cuenta eliminarCuenta(String id) throws CuentaException {
-
         Cuenta cuentaUsuario=obtenerCuenta(id);
+        if(cuentaUsuario==null){
+            throw new CuentaException("La cuenta no existe");
+        }
 
         //Validacion
         cuentaUsuario.setEstado(EstadoCuenta.ELIMINADA);
@@ -125,6 +130,19 @@ public class CuentaServicioImpl implements CuentaServicio {
         return new TokenDTO( jwtUtils.generarToken(cuenta.getEmail(), map) );
     }
 
+
+    public Cuenta obtenerCuenta(String id) throws CuentaException{
+        return cuentaRepo.findById(id).orElseThrow(()->new CuentaException("La cuenta no existe"));
+    }
+
+    public Cuenta getCuentaByEmail(String email){
+        return cuentaRepo.buscarEmail(email).orElseThrow(()->new CuentaException("La cuenta no existe"));
+    }
+
+    public List<Cuenta> getAll(){
+        return cuentaRepo.findAll();
+    }
+
     //---------------------Metodos de autenticación y JWT-----------------------------
     public String encriptarPassword(String password){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -146,12 +164,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         }
         return resul;
     }
-    private Cuenta obtenerCuenta(String id) throws CuentaException{
-        return cuentaRepo.findById(id).orElseThrow(()->new CuentaException("La cuenta no existe"));
-    }
-    private Cuenta getCuentaByEmail(String email){
-        return cuentaRepo.buscarEmail(email).orElseThrow(()->new CuentaException("La cuenta no existe"));
-    }
+
     private Map<String, Object> construirClaims(Cuenta cuenta) {
         return Map.of(
                 "rol", cuenta.getRol(),
