@@ -11,6 +11,8 @@ import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.IllegalFormatCodePointException;
+import java.util.List;
 
 @Service
 public class CuponServicioImpl implements CuponServicio {
@@ -40,7 +42,6 @@ public class CuponServicioImpl implements CuponServicio {
         cupon.setFechaVencimiento(cuponDTO.getFechaVencimiento());
         //Se guarda la nueva información
         return  cuponRepository.save(cupon);
-
     }
 
     /**
@@ -53,6 +54,9 @@ public class CuponServicioImpl implements CuponServicio {
     @Override
     public Cupon eliminarCupon(String codigo, EliminarCuponDTO cuponDTO) throws Exception {
         Cupon cupon= getCuponByCodigo(codigo);
+        if(cupon==null){
+            throw new CuponException("No existe el cupón");
+        }
         //Camniamos el estado (No se elimina)
         cupon.setEstado(cuponDTO.getEstado());
         return cuponRepository.save(cupon);
@@ -90,5 +94,7 @@ public class CuponServicioImpl implements CuponServicio {
         return cuponAux.getFechaVencimiento().isBefore(LocalDateTime.now());
     }
 
-
+    public List<Cupon> getAll(){
+        return cuponRepository.findAll();
+    }
 }
