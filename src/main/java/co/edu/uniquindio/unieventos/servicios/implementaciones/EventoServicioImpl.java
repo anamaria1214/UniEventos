@@ -2,6 +2,7 @@
 
 import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.exceptions.EventoException;
+import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
