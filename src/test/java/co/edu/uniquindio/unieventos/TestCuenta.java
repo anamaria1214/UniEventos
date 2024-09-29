@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TestUsuario {
+public class TestCuenta {
 
     @Autowired
     private CuentaRepo cuentaRepo;
@@ -18,5 +18,7 @@ public class TestUsuario {
         Cuenta cuenta = Cuenta.builder().email("hola").build();
         cuentaRepo.save(cuenta);
     }
+
+
 
 }
