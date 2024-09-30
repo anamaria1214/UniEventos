@@ -3,11 +3,9 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
 import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
-import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
-import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
-import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
-import co.edu.uniquindio.unieventos.modelo.documentos.Orden;
+import co.edu.uniquindio.unieventos.modelo.documentos.*;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
@@ -45,6 +43,8 @@ public class OrdenServicioImpl implements OrdenServicio {
     private final EventoServicio eventoServicio;
     private final OrdenRepo ordenRepo;
     private final CuponServicio cuponServicio;
+    private final CuentaServicio cuentaServicio;
+
     @Override
     public Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {
 
@@ -92,7 +92,11 @@ public class OrdenServicioImpl implements OrdenServicio {
     }
 
     @Override
-    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) {
+    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws CuentaException {
+        Cuenta cuenta = cuentaServicio.obtenerCuenta(idCuenta);
+        if(cuenta == null){
+            throw new CuentaException("No existe una cuenta con ese ID");
+        }
         return List.of();
     }
 

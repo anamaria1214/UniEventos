@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 
 public interface CuentaServicio{
@@ -12,4 +13,6 @@ public interface CuentaServicio{
     String enviarCodigoRecuperacion(String correo);
     String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
     TokenDTO login(LoginDTO loginDTO) throws Exception;
+
+    Cuenta obtenerCuenta(String id) throws CuentaException;
 }

@@ -6,7 +6,7 @@ import co.edu.uniquindio.unieventos.dto.InfoAdicionalDTO;
 import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
-import co.edu.uniquindio.unieventos.servicios.implementaciones.CuentaServicioImpl;
+import co.edu.uniquindio.unieventos.servicios.implementaciones.CuentaServicio;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/cuenta")
 public class CuentaController {
     @Autowired
-    CuentaServicioImpl cuentaServicio;
+    CuentaServicio cuentaServicio;
 
     @GetMapping
     public ResponseEntity<List<Cuenta>> getAll(){

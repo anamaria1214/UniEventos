@@ -8,7 +8,6 @@ import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
-import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +19,13 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CuentaServicioImpl implements CuentaServicio {
+public class CuentaServicio implements co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio {
 
     //Variables
     private final CuentaRepo cuentaRepo;
     private final JWTUtils jwtUtils;
 
-    public CuentaServicioImpl(CuentaRepo cuentaRepo, JWTUtils jwtUtils){
+    public CuentaServicio(CuentaRepo cuentaRepo, JWTUtils jwtUtils){
         this.cuentaRepo=cuentaRepo;
         this.jwtUtils = jwtUtils;
     }
@@ -130,7 +129,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         return new TokenDTO( jwtUtils.generarToken(cuenta.getEmail(), map) );
     }
 
-
+    @Override
     public Cuenta obtenerCuenta(String id) throws CuentaException{
         return cuentaRepo.findById(id).orElseThrow(()->new CuentaException("La cuenta no existe"));
     }
