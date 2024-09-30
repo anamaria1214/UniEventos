@@ -49,7 +49,7 @@ public class CuponController {
      * @return
      * @throws Exception
      */
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearCuponDTO cuponDTO) throws Exception {
         Cupon nuevoCupon= cuponServicio.crearCupon(cuponDTO);
         String message= "Cupón "+ nuevoCupon.getNombre() +" ha sido guardado con exito";
