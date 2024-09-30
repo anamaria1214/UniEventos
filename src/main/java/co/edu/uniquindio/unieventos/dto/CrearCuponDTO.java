@@ -21,6 +21,10 @@ public class CrearCuponDTO {
          @NotNull (message="El estado es obligatorio")
          TipoCupon tipo;
 
+
+    public CrearCuponDTO() {
+    }
+
     public CrearCuponDTO(String nombre, float descuento, LocalDateTime fechaVencimiento, String codigo, TipoCupon tipo) {
         this.nombre = nombre;
         this.descuento = descuento;
