@@ -2,6 +2,7 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
@@ -76,6 +77,23 @@ public class OrdenServicioImpl implements OrdenServicio {
         orden.setTotal(total);
         return ordenRepo.save(orden);
 
+    }
+    @Override
+    public void cancelarOrden(String idOrden) throws Exception {
+        Orden orden  = obtenerOrden(idOrden);
+        List<DetalleOrden> items = orden.getItems();
+        for(DetalleOrden item : items){
+            Evento evento= eventoServicio.obtenerEvento(item.getIdEvento());
+            Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
+            int vendidas = localidad.getEntradasVendidas()-item.getCantidad();
+            eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), vendidas);
+        }
+        ordenRepo.deleteById(idOrden);
+    }
+
+    @Override
+    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) {
+        return List.of();
     }
 
     public Preference realizarPago(String idOrden) throws Exception {
@@ -177,10 +195,6 @@ public class OrdenServicioImpl implements OrdenServicio {
 
     }
 
-    @Override
-    public void cancelarOrden(String idOrden) throws Exception {
-
-    }
 
     //private methods
     private Orden obtenerOrden(String id) throws OrdenException {
