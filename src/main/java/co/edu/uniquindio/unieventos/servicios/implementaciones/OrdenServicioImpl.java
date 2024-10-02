@@ -82,17 +82,11 @@ public class OrdenServicioImpl implements OrdenServicio {
         Orden ordenGuardada = obtenerOrden(idOrden);
         List<PreferenceItemRequest> itemsPasarela = new ArrayList<>();
 
-
-        // Recorrer los items de la orden y crea los ítems de la pasarela
         for(DetalleOrden item : ordenGuardada.getItems()){
 
-
-            // Obtener el evento y la localidad del ítem
             Evento evento = eventoServicio.obtenerEvento(item.getIdEvento().toString());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
 
-
-            // Crear el item de la pasarela
             PreferenceItemRequest itemRequest =
                     PreferenceItemRequest.builder()
                             .id(evento.getId())

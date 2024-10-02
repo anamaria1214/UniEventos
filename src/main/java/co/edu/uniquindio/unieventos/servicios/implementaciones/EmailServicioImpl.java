@@ -21,7 +21,7 @@ public class EmailServicioImpl implements EmailServicio {
 
 
         Email email = EmailBuilder.startingBlank()
-                .from("SMTP_USERNAME")
+                .from("unieventosq@gmail.com")
                 .to(emailDTO.destinatario())
                 .withSubject(emailDTO.asunto())
                 .withPlainText(emailDTO.cuerpo())
@@ -30,7 +30,7 @@ public class EmailServicioImpl implements EmailServicio {
 
 
         try (Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP_HOST", 80, "SMTP_USERNAME", "SMTP_PASSWORD")
+                .withSMTPServer("SMTP_HOST", 80, "unieventosq@gmail.com", "nhno mixc agah vnf")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .withDebugLogging(true)
                 .buildMailer()) {
