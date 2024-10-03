@@ -1,8 +1,11 @@
 package co.edu.uniquindio.unieventos.dto;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import co.edu.uniquindio.unieventos.modelo.enums.TipoEvento;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 
+import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +35,7 @@ public class CrearEventoDTO {
     private String imagenPortada;
     @NotBlank(message="La portada del evento es obligatoria")
     private String imagenLocalidades;
-
+    private List<Localidad> localidades;
     public CrearEventoDTO() {
     }
 }

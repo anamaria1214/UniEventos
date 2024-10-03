@@ -43,7 +43,7 @@ public class OrdenServicioImpl implements OrdenServicio {
     private final EventoServicio eventoServicio;
     private final OrdenRepo ordenRepo;
     private final CuponServicio cuponServicio;
-    private final CuentaServicio cuentaServicio;
+    private final CuentaServicioImpl cuentaServicio;
 
     @Override
     public Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {

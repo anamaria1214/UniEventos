@@ -22,7 +22,7 @@ public class CarritoController {
     @PostMapping("/agregarEvento")
     public ResponseEntity<MensajeDTO<String>> agregarEventoCarrito(@Valid @RequestBody CarritoDTO agregarCarrito) throws Exception{
         carritoServicio.agregarEventoCarrito(agregarCarrito);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Cuenta creada exitosamente"));
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Item agregado exitosamente"));
     }
 
     @DeleteMapping("/vaciarCarrito/{id}")

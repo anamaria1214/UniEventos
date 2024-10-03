@@ -19,7 +19,6 @@ public class EmailServicioImpl implements EmailServicio {
     @Async
     public void enviarCorreo(EmailDTO emailDTO) throws Exception {
 
-
         Email email = EmailBuilder.startingBlank()
                 .from("unieventosq@gmail.com")
                 .to(emailDTO.destinatario())
@@ -28,17 +27,14 @@ public class EmailServicioImpl implements EmailServicio {
                 .buildEmail();
 
 
-
         try (Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP_HOST", 80, "unieventosq@gmail.com", "nhno mixc agah vnf")
+                .withSMTPServer("smtp.gmail.com", 587, "unieventosq@gmail.com", "uljn laxv yiwk eerv")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .withDebugLogging(true)
                 .buildMailer()) {
 
-
             mailer.sendMail(email);
         }
-
 
     }
 
