@@ -5,6 +5,7 @@ import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CrearEventoDTO {
 
@@ -24,12 +24,15 @@ public class CrearEventoDTO {
     private String direccion;
     @NotBlank(message="La ciudad del evento es obligatorio")
     private String ciudad;
+    @NotNull(message="La fecha es obligatoria")
     private LocalDateTime fecha;
-    @NotBlank(message="El Tipo de evento es obligatorio")
+    @NotNull(message="El Tipo de evento es obligatorio")
     private TipoEvento tipo;
     @NotBlank(message="La imagen del evento es obligatoria")
     private String imagenPortada;
     @NotBlank(message="La portada del evento es obligatoria")
     private String imagenLocalidades;
 
+    public CrearEventoDTO() {
+    }
 }

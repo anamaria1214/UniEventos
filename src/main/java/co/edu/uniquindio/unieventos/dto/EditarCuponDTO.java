@@ -21,6 +21,9 @@ public class EditarCuponDTO {
     @NotNull (message="El estado es obligatorio")
     TipoCupon tipo;
 
+    public EditarCuponDTO() {
+    }
+
     public EditarCuponDTO(String nombre, float descuento, LocalDateTime fechaVTO, TipoCupon tipoCupon) {
         this.nombre=nombre;
         this.descuento=descuento;

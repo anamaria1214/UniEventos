@@ -42,7 +42,7 @@ public class EventoController {
         return ResponseEntity.ok(eventoServicio.obtenerEvento(id));
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearEventoDTO crearEventoDTO) throws Exception {
         Evento eventoNuevo= eventoServicio.crearEvento(crearEventoDTO);
         String message= "Evento "+ eventoNuevo.getNombre() +" ha sido guardado con exito";

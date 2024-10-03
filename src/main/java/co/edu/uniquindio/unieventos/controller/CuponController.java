@@ -5,6 +5,7 @@ import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
 import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuponException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.servicios.implementaciones.CuponServicioImpl;
 import jakarta.validation.Valid;
@@ -64,7 +65,7 @@ public class CuponController {
      * @throws Exception
      */
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> update(@PathVariable ("id") String id,@Valid @RequestBody EditarCuponDTO cuponDTO) throws Exception {
+    public ResponseEntity<MessageDTO> update(@PathVariable ("id") String id,@Valid @RequestBody EditarCuponDTO cuponDTO) throws CuponException {
         Cupon cuponEditado = cuponServicio.editarCupon(id,cuponDTO);
         String message= "Cupón "+ cuponEditado.getNombre() +" ha sido actualizado con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK,message));
