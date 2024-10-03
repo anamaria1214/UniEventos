@@ -19,4 +19,6 @@ public interface CarritoServicio {
     String editarCantidad(CarritoDTO carritoDTO) throws CarritoException, Exception;
 
     Carrito obtenerCarrito(String id) throws CarritoException;
+
+    void crearCarrito(String id) throws CarritoException;
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,23 +26,34 @@ public class CarritoController {
     }
 
     @DeleteMapping("/vaciarCarrito/{id}")
-    private String vaciarCarrito(@PathVariable String id) throws Exception{
+    private ResponseEntity<MensajeDTO<String>> vaciarCarrito(@PathVariable String id) throws Exception{
         carritoServicio.vaciarCarrito(id);
-        return "Carrito sin elementos";
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito sin elementos"));
     }
     @DeleteMapping("/eliminarEvento-carrito")
-    private String eliminarEventoCarrito(@Valid @RequestBody CarritoDTO eliminarDelCarrito) throws Exception{
+    private ResponseEntity<MensajeDTO<String>> eliminarEventoCarrito(@Valid @RequestBody CarritoDTO eliminarDelCarrito) throws Exception{
        carritoServicio.eliminarEventoCarrito(eliminarDelCarrito);
-       return "Carrito eliminado";
+       return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito eliminado"));
     }
     @GetMapping("/listarElementos-carrito")
-    private List<CarritoDTO> listarElementos(@Valid @RequestBody CarritoDTO carritoDTO) throws Exception{
-        return carritoServicio.listarElementos(carritoDTO);
+    private ResponseEntity<MensajeDTO<List<CarritoDTO>>> listarElementos(@Valid @RequestBody CarritoDTO carritoDTO) throws Exception{
+        List<CarritoDTO> carritos= carritoServicio.listarElementos(carritoDTO);
+        return ResponseEntity.ok(new MensajeDTO<>(false, carritos));
     }
 
     @PutMapping("/editarCantidad")
-    public String editarCantidad(@Valid @RequestBody CarritoDTO carritoDTO) throws Exception{
+    public ResponseEntity<MensajeDTO<String>> editarCantidad(@Valid @RequestBody CarritoDTO carritoDTO) throws Exception{
         carritoServicio.editarCantidad(carritoDTO);
-        return "Se he editado correctamente";
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Cantidad evento editado"));
+    }
+
+    @PostMapping("/crear-carrito/{id}")
+    public ResponseEntity<MensajeDTO<String>> crearCarrito(@PathVariable String id) throws Exception {
+        //try {
+            carritoServicio.crearCarrito(id);
+            return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito creado"));
+        //} catch (Exception e) {
+            //return ResponseEntity.ok(new MensajeDTO<>(false, "Erro al crear un carrito"));
+        //}
     }
 }

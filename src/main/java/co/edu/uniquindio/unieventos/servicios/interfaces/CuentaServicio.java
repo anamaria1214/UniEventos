@@ -1,7 +1,6 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.*;
-import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 
 public interface CuentaServicio{

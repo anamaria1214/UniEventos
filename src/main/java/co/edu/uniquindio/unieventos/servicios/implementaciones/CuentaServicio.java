@@ -7,6 +7,7 @@ import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
+import co.edu.uniquindio.unieventos.modelo.vo.Usuario;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,44 +34,48 @@ public class CuentaServicio implements co.edu.uniquindio.unieventos.servicios.in
     @Override
     public Cuenta crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException {
 
+        Optional<Cuenta> cuentaExistente = cuentaRepo.buscarEmail(cuentaDTO.correo());
+
+        if (cuentaExistente.isPresent()) {
+            throw new CuentaException("Cuenta ya existente con el correo: " + cuentaDTO.correo());
+        }
+
         Cuenta cuenta= new Cuenta();
         cuenta.setEmail(cuentaDTO.correo());
         cuenta.setPassword(encriptarPassword(cuentaDTO.password())); //Se encripta la contraseña
         cuenta.setRol(Rol.CLIENTE);
         cuenta.setFechaRegistro(LocalDateTime.now());
         cuenta.setEstado(EstadoCuenta.ACTIVO);
-        // cuenta.setUsuario(idCuenta);
+        cuenta.setUsuario(new Usuario(cuentaDTO.idUsuario(), null, null, null));
         cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
         return cuentaRepo.save(cuenta);
-        //emailServicio.
 
     }
 
     @Override
     public Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws CuentaException {
 
-        Cuenta cuentaUsuario=obtenerCuenta(cuenta.id());
+        Cuenta cuentaUsuario=getCuentaByEmail(cuenta.email());
         if (cuentaUsuario==null){
             throw new CuentaException("La cuenta no existe");
         }
-        //Validacion
+
         cuentaUsuario.getUsuario().setNombre(cuenta.nombre());
         cuentaUsuario.getUsuario().setDireccion(cuenta.direccion());
         cuentaUsuario.getUsuario().setTelefono(cuenta.telefono());
-        cuentaUsuario.setPassword(cuenta.password());
+
 
         return cuentaRepo.save(cuentaUsuario);
 
     }
 
     @Override
-    public Cuenta eliminarCuenta(String id) throws CuentaException {
-        Cuenta cuentaUsuario=obtenerCuenta(id);
+    public Cuenta eliminarCuenta(String email) throws CuentaException {
+        Cuenta cuentaUsuario=getCuentaByEmail(email);
         if(cuentaUsuario==null){
             throw new CuentaException("La cuenta no existe");
         }
 
-        //Validacion
         cuentaUsuario.setEstado(EstadoCuenta.ELIMINADA);
         return cuentaRepo.save(cuentaUsuario);
     }

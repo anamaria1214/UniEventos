@@ -1,7 +1,11 @@
 package co.edu.uniquindio.unieventos.dto;
 
-public record InfoAdicionalDTO(String id, String telefono,
-                               String direccion, String cedula,
-                               String nombre, String password) {
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
+
+public record InfoAdicionalDTO(@NotBlank String email,
+                               @Length(max=10) String telefono,
+                               String direccion,
+                               @NotBlank @Length(max=30) String nombre) {
 
 }

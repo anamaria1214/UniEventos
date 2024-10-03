@@ -3,13 +3,17 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 import co.edu.uniquindio.unieventos.dto.CarritoDTO;
 import co.edu.uniquindio.unieventos.exceptions.CarritoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import co.edu.uniquindio.unieventos.repositorios.CarritoRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +23,12 @@ public class CarritoServicioImpl implements CarritoServicio {
 
     private final CarritoRepo carritoRepo;
     private final EventoServicio eventoServicio;
+    private final CuentaServicio cuentaServicio;
 
-    public CarritoServicioImpl(CarritoRepo carritoRepo, EventoServicio eventoServicio) {
+    public CarritoServicioImpl(CarritoRepo carritoRepo, EventoServicio eventoServicio, CuentaServicio cuentaServicio) {
         this.carritoRepo = carritoRepo;
         this.eventoServicio = eventoServicio;
+        this.cuentaServicio = cuentaServicio;
     }
 
     private Carrito findById(String id) throws CarritoException{
@@ -126,6 +132,16 @@ public class CarritoServicioImpl implements CarritoServicio {
             throw new CarritoException("Carrito no encontrado");
         }
 
+    }
+
+    @Override
+    public void crearCarrito(String id) throws CarritoException {
+        if(cuentaServicio.obtenerCuenta(id)!=null){
+            Carrito carrito= new Carrito(LocalDateTime.now(),new ObjectId(id), new ArrayList<DetalleCarrito>());
+            carritoRepo.save(carrito);
+        }else{
+            throw new CarritoException("Cuenta no existente");
+        }
     }
 
 }
