@@ -22,7 +22,7 @@ public class CarritoController {
     @PostMapping("/agregarEvento")
     public ResponseEntity<MensajeDTO<String>> agregarEventoCarrito(@Valid @RequestBody CarritoDTO agregarCarrito) throws Exception{
         carritoServicio.agregarEventoCarrito(agregarCarrito);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Cuenta creada exitosamente"));
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Item agregado exitosamente"));
     }
 
     @DeleteMapping("/vaciarCarrito/{id}")
@@ -49,11 +49,11 @@ public class CarritoController {
 
     @PostMapping("/crear-carrito/{id}")
     public ResponseEntity<MensajeDTO<String>> crearCarrito(@PathVariable String id) throws Exception {
-        //try {
+        try {
             carritoServicio.crearCarrito(id);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito creado"));
-        //} catch (Exception e) {
-            //return ResponseEntity.ok(new MensajeDTO<>(false, "Erro al crear un carrito"));
-        //}
+        } catch (Exception e) {
+            return ResponseEntity.ok(new MensajeDTO<>(false, "Error al crear un carrito"));
+        }
     }
 }

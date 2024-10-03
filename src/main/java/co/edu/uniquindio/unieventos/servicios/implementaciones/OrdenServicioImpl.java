@@ -10,7 +10,6 @@ import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.modelo.vo.Pago;
-import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
 import co.edu.uniquindio.unieventos.repositorios.OrdenRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
@@ -34,7 +33,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -45,8 +43,7 @@ public class OrdenServicioImpl implements OrdenServicio {
     private final EventoServicio eventoServicio;
     private final OrdenRepo ordenRepo;
     private final CuponServicio cuponServicio;
-    private final CuentaServicio cuentaServicio;
-    private final EventoRepo eventoRepo;
+    private final CuentaServicioImpl cuentaServicio;
 
     @Override
     public Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {
@@ -95,25 +92,12 @@ public class OrdenServicioImpl implements OrdenServicio {
     }
 
     @Override
-    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws Exception,OrdenException,CuentaException {
+    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws CuentaException {
         Cuenta cuenta = cuentaServicio.obtenerCuenta(idCuenta);
         if(cuenta == null){
             throw new CuentaException("No existe una cuenta con ese ID");
         }
-        List<Orden> ordenes = ordenRepo.findAllByIdCuenta(new ObjectId(idCuenta));
-        if(ordenes.isEmpty()){
-            throw new OrdenException("No hay ordenes vinculadas a esta cuenta");
-        }
-        List<ItemOrdenDTO> historialOrdenes = new ArrayList<>();
-        for(Orden orden : ordenes){
-            DetalleOrden detalleOrden = orden.getItems().get(0);
-
-            Evento evento = eventoServicio.obtenerEvento(detalleOrden.getIdEvento());
-            ItemOrdenDTO itemOrdenDTO = new ItemOrdenDTO(evento.getImagenPortada(),evento.getNombre(), evento.getFecha(), detalleOrden.getNombreLocalidad(), detalleOrden.getCantidad(), orden.getTotal());
-            historialOrdenes.add(itemOrdenDTO);
-
-        }
-        return historialOrdenes;
+        return List.of();
     }
 
     public Preference realizarPago(String idOrden) throws Exception {

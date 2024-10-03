@@ -43,6 +43,9 @@ public class CarritoServicioImpl implements CarritoServicio {
     @Override
     public String agregarEventoCarrito(CarritoDTO agregarCarrito) throws  Exception ,CarritoException {
         Carrito carrito= findById(agregarCarrito.idCarrito());
+        if(eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad())!=null){
+            throw new CarritoException("La localidad seleccionada no existe");
+        }
         int entradasVendidas= eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getEntradasVendidas();
         int capacidadMaxima= eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getCapacidadMaxima();
         boolean existe = false;

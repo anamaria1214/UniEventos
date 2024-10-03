@@ -5,49 +5,34 @@ import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
-import co.edu.uniquindio.unieventos.servicios.implementaciones.CuentaServicio;
+import co.edu.uniquindio.unieventos.servicios.implementaciones.CuentaServicioImpl;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/cuenta/api")
 public class CuentaController {
-    @Autowired
-    CuentaServicio cuentaServicio;
 
-    @GetMapping
-    public ResponseEntity<List<Cuenta>> getAll(){
-        return ResponseEntity.ok(cuentaServicio.getAll());
-    }
-
+    private final CuentaServicio cuentaServicio;
 
     @GetMapping("/{id}")
     public ResponseEntity<Cuenta> getOneById(@PathVariable("id") String id){
         return ResponseEntity.ok(cuentaServicio.obtenerCuenta(id));
     }
 
-    /**
-     * Metodo en el que se obtiene una cuenta dado su correo
-     * @param email
-     * @return
-     */
-    @GetMapping("/{email}")
-    public ResponseEntity<Cuenta> getOneByEmail(@PathVariable("email" ) String email){
-        return ResponseEntity.ok(cuentaServicio.getCuentaByEmail(email));
-    }
-
     @PostMapping("/crear-cuenta")
-    public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException {
-        Cuenta cuenta= cuentaServicio.crearCuenta(cuentaDTO);
+    public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception {
+        cuentaServicio.crearCuenta(cuentaDTO);
         String message= "La cuenta ha sido creada con exito";
-        return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
+        return ResponseEntity.ok(new MensajeDTO<>(false, message));
     }
 
     @PutMapping("/editar-cuenta")
@@ -58,7 +43,7 @@ public class CuentaController {
     }
 
     @DeleteMapping("/eliminar-cuenta/{email}")
-    public ResponseEntity<MessageDTO> delete(@PathVariable("email") String email) throws CuentaException {
+    public ResponseEntity<MessageDTO> delete(@PathVariable("email") String email) throws CuentaException, Exception {
         cuentaServicio.eliminarCuenta(email);
         String message= "La cuenta ha sido eliminada con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));

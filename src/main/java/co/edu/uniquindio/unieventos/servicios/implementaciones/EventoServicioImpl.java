@@ -28,6 +28,9 @@ public class EventoServicioImpl implements EventoServicio {
     @Override
     public Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception {
         Evento evento= new Evento(crearEventoDTO.getNombre(),crearEventoDTO.getDescripcion(),crearEventoDTO.getDireccion(), crearEventoDTO.getCiudad(), crearEventoDTO.getFecha(),EstadoEvento.ACTIVO, crearEventoDTO.getTipo(),crearEventoDTO.getImagenPortada(),crearEventoDTO.getImagenLocalidades());
+
+        evento.setLocalidades(crearEventoDTO.getLocalidades());
+
         return  eventoRepo.save(evento);
 
     }

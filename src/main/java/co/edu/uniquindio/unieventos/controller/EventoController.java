@@ -42,6 +42,7 @@ public class EventoController {
         return ResponseEntity.ok(eventoServicio.obtenerEvento(id));
     }
 
+
     @PostMapping("/save")
     public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearEventoDTO crearEventoDTO) throws Exception {
         Evento eventoNuevo= eventoServicio.crearEvento(crearEventoDTO);
