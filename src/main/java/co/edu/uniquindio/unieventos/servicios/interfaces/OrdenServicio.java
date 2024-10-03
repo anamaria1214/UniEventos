@@ -3,6 +3,8 @@ package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
 import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuentaException;
+import co.edu.uniquindio.unieventos.exceptions.OrdenException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Orden;
 import com.mercadopago.resources.preference.Preference;
 
@@ -15,5 +17,6 @@ public interface OrdenServicio {
     Preference realizarPago(String idOrden) throws Exception;
     void recibirNotificacionMercadoPago(Map<String, Object> request);
     void cancelarOrden(String idOrden) throws Exception;
-    List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta);
+    List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws OrdenException, CuentaException, Exception;
+
 }
