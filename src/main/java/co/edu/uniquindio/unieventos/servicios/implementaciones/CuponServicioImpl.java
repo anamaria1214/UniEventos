@@ -24,10 +24,9 @@ public class CuponServicioImpl implements CuponServicio {
     }
 
     @Override
-    public Cupon crearCupon(CrearCuponDTO cuponDTO) throws Exception {
+    public Cupon crearCupon(CrearCuponDTO cuponDTO) throws CuponException {
         Cupon cupon= new Cupon(cuponDTO.getNombre(),cuponDTO.getDescuento(),cuponDTO.getFechaVencimiento(),cuponDTO.getCodigo(), EstadoCupon.DISPONIBLE,cuponDTO.getTipo());
         return  cuponRepository.save(cupon);
-
     }
 
     @Override

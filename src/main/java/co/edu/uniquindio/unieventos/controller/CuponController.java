@@ -51,7 +51,7 @@ public class CuponController {
      * @throws Exception
      */
     @PostMapping("/save")
-    public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearCuponDTO cuponDTO) throws Exception {
+    public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearCuponDTO cuponDTO) throws CuponException {
         Cupon nuevoCupon= cuponServicio.crearCupon(cuponDTO);
         String message= "Cupón "+ nuevoCupon.getNombre() +" ha sido guardado con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK,message));
