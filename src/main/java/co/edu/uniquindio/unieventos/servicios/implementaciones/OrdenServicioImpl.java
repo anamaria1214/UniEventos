@@ -2,6 +2,8 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.DetalleOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.InformacionOrdenCompraDTO;
 import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
@@ -114,6 +116,22 @@ public class OrdenServicioImpl implements OrdenServicio {
 
         }
         return historialOrdenes;
+    }
+
+    @Override
+    public InformacionOrdenCompraDTO obtenerInformacionOrden(String idOrden)throws OrdenException, Exception {
+        Optional<Orden> orden = ordenRepo.findById(idOrden);
+        if(orden == null){
+            throw new OrdenException("No se encontró la orden con el ID dado");
+        }
+        List<DetalleOrdenDTO> detalleOrdenes = new ArrayList<>();
+        for( DetalleOrden detail : orden.get().getItems()){
+            Evento evento = eventoServicio.obtenerEvento(detail.getIdEvento());
+            DetalleOrdenDTO detalle = new DetalleOrdenDTO(evento.getNombre(),detail.getNombreLocalidad(), detail.getCantidad(), detail.getPrecio() );
+            detalleOrdenes.add(detalle);
+        }
+        InformacionOrdenCompraDTO info = new InformacionOrdenCompraDTO(idOrden, orden.get().getTotal(), orden.get().getFecha(),detalleOrdenes );
+        return info;
     }
 
     public Preference realizarPago(String idOrden) throws Exception {

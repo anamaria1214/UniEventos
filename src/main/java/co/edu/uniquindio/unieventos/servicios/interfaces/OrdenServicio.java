@@ -2,6 +2,7 @@ package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.InformacionOrdenCompraDTO;
 import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
@@ -18,5 +19,5 @@ public interface OrdenServicio {
     void recibirNotificacionMercadoPago(Map<String, Object> request);
     void cancelarOrden(String idOrden) throws Exception;
     List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws OrdenException, CuentaException, Exception;
-
+    InformacionOrdenCompraDTO obtenerInformacionOrden(String idOrden)throws OrdenException, Exception;
 }
