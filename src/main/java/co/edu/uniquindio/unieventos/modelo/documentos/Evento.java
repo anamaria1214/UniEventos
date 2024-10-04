@@ -55,7 +55,12 @@ public class Evento {
     }
 
     public Localidad obtenerLocalidad(String nombre){
-        //Hacer un for, filter, por el nombre
+        //Hacer un for, filter, por el nombre}
+        for(Localidad localidad: localidades){
+            if(localidad.getNombre().equals(nombre)){
+                return localidad;
+            }
+        }
         return null;
     }
 }

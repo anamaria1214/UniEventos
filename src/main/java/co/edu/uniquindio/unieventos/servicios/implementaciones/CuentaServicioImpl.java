@@ -9,6 +9,8 @@ import co.edu.uniquindio.unieventos.modelo.enums.Rol;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
 import co.edu.uniquindio.unieventos.modelo.vo.Usuario;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,19 +22,21 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CuentaServicio implements co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio {
+public class CuentaServicioImpl implements CuentaServicio {
 
     //Variables
     private final CuentaRepo cuentaRepo;
     private final JWTUtils jwtUtils;
+    private final EmailServicio emailServicio;
 
-    public CuentaServicio(CuentaRepo cuentaRepo, JWTUtils jwtUtils){
+    public CuentaServicioImpl(CuentaRepo cuentaRepo, JWTUtils jwtUtils, EmailServicio emailServicio){
         this.cuentaRepo=cuentaRepo;
         this.jwtUtils = jwtUtils;
+        this.emailServicio = emailServicio;
     }
     //Metodos de la cuenta
     @Override
-    public Cuenta crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException {
+    public void crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception {
 
         Optional<Cuenta> cuentaExistente = cuentaRepo.buscarEmail(cuentaDTO.correo());
 
@@ -40,15 +44,20 @@ public class CuentaServicio implements co.edu.uniquindio.unieventos.servicios.in
             throw new CuentaException("Cuenta ya existente con el correo: " + cuentaDTO.correo());
         }
 
+        CodigoValidacion codigo = new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion());
+
         Cuenta cuenta= new Cuenta();
         cuenta.setEmail(cuentaDTO.correo());
         cuenta.setPassword(encriptarPassword(cuentaDTO.password())); //Se encripta la contraseña
         cuenta.setRol(Rol.CLIENTE);
         cuenta.setFechaRegistro(LocalDateTime.now());
-        cuenta.setEstado(EstadoCuenta.ACTIVO);
+        cuenta.setEstado(EstadoCuenta.INACTIVO);
         cuenta.setUsuario(new Usuario(cuentaDTO.idUsuario(), null, null, null));
-        cuenta.setCodValidacionRegistro(new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion()));
-        return cuentaRepo.save(cuenta);
+        cuenta.setCodValidacionRegistro(codigo);
+
+        emailServicio.enviarCorreo( new EmailDTO("Código de validación", "El código de validación es: "+codigo.getCodigo(), cuentaDTO.correo()) );
+
+        cuentaRepo.save(cuenta);
 
     }
 
@@ -163,7 +172,7 @@ public class CuentaServicio implements co.edu.uniquindio.unieventos.servicios.in
 
         for(int i=0; i<6;i++){
             int indice = (int) (Math.random()*cadena.length());
-            char car= cadena.charAt(i);
+            char car= cadena.charAt(indice);
             resul+=car;
         }
         return resul;
