@@ -41,7 +41,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         Optional<Cuenta> cuentaExistente = cuentaRepo.buscarEmail(cuentaDTO.correo());
 
         if (cuentaExistente.isPresent()) {
-            throw new CuentaException("Cuenta ya existente con el correo: " + cuentaDTO.correo());
+            throw new CuentaException("El correo: " + cuentaDTO.correo() +  " ya está asociado a una cuenta");
         }
 
         CodigoValidacion codigo = new CodigoValidacion( LocalDateTime.now(), generarCodigoValidacion());
@@ -56,9 +56,22 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuenta.setCodValidacionRegistro(codigo);
 
         emailServicio.enviarCorreo( new EmailDTO("Código de validación", "El código de validación es: "+codigo.getCodigo(), cuentaDTO.correo()) );
-
         cuentaRepo.save(cuenta);
 
+    }
+    @Override
+    public ValidarCodigoDTO validarCodig(ValidarCodigoDTO validarCodigoDTO){
+        Cuenta cuenta= getCuentaByEmail(validarCodigoDTO.email());
+
+        //El codigo no coincide con el enviado
+        if(!cuenta.getCodValidacionRegistro().equals(validarCodigoDTO.codigo())){
+            throw new CuentaException("El código ingresado es incorrecto");
+        }
+
+        cuenta.setEstado(EstadoCuenta.ACTIVO);
+        cuenta.setCodValidacionRegistro(null);
+        cuentaRepo.save(cuenta);
+        return validarCodigoDTO; //Retorno para el controller
     }
 
     @Override
