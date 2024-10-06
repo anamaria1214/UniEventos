@@ -2,6 +2,7 @@ package co.edu.uniquindio.unieventos.controller;
 
 import co.edu.uniquindio.unieventos.dto.CarritoDTO;
 import co.edu.uniquindio.unieventos.dto.MensajeDTO;
+import co.edu.uniquindio.unieventos.exceptions.CarritoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
 import jakarta.validation.Valid;
@@ -43,8 +44,13 @@ public class CarritoController {
 
     @PutMapping("/editarCantidad")
     public ResponseEntity<MensajeDTO<String>> editarCantidad(@Valid @RequestBody CarritoDTO carritoDTO) throws Exception{
-        carritoServicio.editarCantidad(carritoDTO);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Cantidad evento editado"));
+        try{
+            carritoServicio.editarCantidad(carritoDTO);
+            return ResponseEntity.ok(new MensajeDTO<>(false, "Cantidad evento editado"));
+        }catch(CarritoException e){
+            return ResponseEntity.ok(new MensajeDTO<>(true, e.getMessage()));
+        }
+
     }
 
     @PostMapping("/crear-carrito/{id}")

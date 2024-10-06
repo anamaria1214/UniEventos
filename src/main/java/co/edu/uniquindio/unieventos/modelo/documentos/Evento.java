@@ -54,11 +54,14 @@ public class Evento {
         this.localidades = new ArrayList<>();
     }
 
-    public Localidad obtenerLocalidad(String nombre){
-        //Hacer un for, filter, por el nombre}
+    public Localidad obtenerLocalidad(String nombre) throws Exception {
         for(Localidad localidad: localidades){
             if(localidad.getNombre().equals(nombre)){
                 return localidad;
+
+            }else{
+                throw new Exception("La localidad no existe");
+
             }
         }
         return null;

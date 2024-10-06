@@ -43,7 +43,7 @@ public class CarritoServicioImpl implements CarritoServicio {
     @Override
     public String agregarEventoCarrito(CarritoDTO agregarCarrito) throws  Exception ,CarritoException {
         Carrito carrito= findById(agregarCarrito.idCarrito());
-        if(eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad())!=null){
+        if(eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad())==null){
             throw new CarritoException("La localidad seleccionada no existe");
         }
         int entradasVendidas= eventoServicio.obtenerEvento(agregarCarrito.idEvento()).obtenerLocalidad(agregarCarrito.nLocalidad()).getEntradasVendidas();
@@ -75,7 +75,6 @@ public class CarritoServicioImpl implements CarritoServicio {
         }catch (CarritoException c){
             throw new CarritoException("Carrito no encontrado");
         }
-
     }
 
     @Override
@@ -88,7 +87,7 @@ public class CarritoServicioImpl implements CarritoServicio {
                 break;
             }
         }
-
+        carritoRepo.save(carrito);
         return "Elemento borrado correctamente";
     }
 
@@ -112,6 +111,9 @@ public class CarritoServicioImpl implements CarritoServicio {
     @Override
     public String editarCantidad(CarritoDTO carritoDTO) throws CarritoException, Exception{
         Carrito carrito= findById(carritoDTO.idCarrito());
+        if(eventoServicio.obtenerEvento(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad())==null){
+            throw new CarritoException("La localidad seleccionada no existe");
+        }
         for(int i=0;i<carrito.getItems().size();i++){
             if(carrito.getItems().get(i).getIdEvento().equals(carritoDTO.idEvento())){
                 int nuevaCantidad= eventoServicio.obtenerEvento(carritoDTO.idEvento()).obtenerLocalidad(carritoDTO.nLocalidad()).getEntradasVendidas()+carritoDTO.nuevaCantidad()-carrito.getItems().get(i).getCantidad();
@@ -124,6 +126,7 @@ public class CarritoServicioImpl implements CarritoServicio {
 
             }
         }
+        carritoRepo.save(carrito);
         return "El carrito se ha editado corectamente";
     }
 

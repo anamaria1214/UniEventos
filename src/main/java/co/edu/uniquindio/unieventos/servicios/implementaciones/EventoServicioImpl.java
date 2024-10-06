@@ -63,26 +63,29 @@ public class EventoServicioImpl implements EventoServicio {
     @Override
     public InformacionEventoDTO obtenerInformacionEvento(String id) throws Exception {
 
-        Optional<Evento> eventoOpcional= eventoRepo.findById(id);
+        try{
+            Optional<Evento> eventoOpcional= eventoRepo.findById(id);
+            Evento evento= eventoOpcional.get();
+            InformacionEventoDTO infoEvento= new InformacionEventoDTO(
+                    evento.getNombre(),
+                    evento.getDescripcion(),
+                    evento.getImagenPortada(),
+                    evento.getFecha(),
+                    evento.getCiudad(),
+                    evento.getDireccion(),
+                    evento.getTipo(),
+                    evento.getLocalidades()
+            );
+            return infoEvento;
+        }catch (Exception e){
+            throw new Exception("Evento no encontrado");
+        }
 
-
-        Evento evento= eventoOpcional.get();
-        InformacionEventoDTO infoEvento= new InformacionEventoDTO(
-                evento.getNombre(),
-                evento.getDescripcion(),
-                evento.getImagenPortada(),
-                evento.getFecha(),
-                evento.getCiudad(),
-                evento.getDireccion(),
-                evento.getTipo(),
-                evento.getLocalidades()
-        );
-
-        return infoEvento;
     }
 
     @Override
     public List<ItemEventoDTO> listarEventos() {
+
         List<Evento> eventos = eventoRepo.findAll();
         List<ItemEventoDTO> respuesta = new ArrayList<>();
 
@@ -101,8 +104,17 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public List<ItemEventoDTO> filtrarEventos(FiltroEventoDTO filtroEventoDTO) {
-
-        return null;
+        List<ItemEventoDTO> respuesta = new ArrayList<>();
+        List<Evento> eventos= eventoRepo.filtrarEventos(filtroEventoDTO.nombre(),filtroEventoDTO.tipo().toString(), filtroEventoDTO.ciudad());
+        for(Evento evento : eventos){
+            respuesta.add(new ItemEventoDTO(
+                    evento.getImagenPortada(),
+                    evento.getNombre(),
+                    evento.getFecha(),
+                    evento.getDireccion()
+            ));
+        }
+        return respuesta;
     }
 
     @Override
