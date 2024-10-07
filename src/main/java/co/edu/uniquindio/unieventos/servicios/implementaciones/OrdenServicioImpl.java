@@ -59,6 +59,7 @@ public class OrdenServicioImpl implements OrdenServicio {
         for (DetalleCarrito item : items) {
             Evento evento = eventoServicio.obtenerEvento(item.getIdEvento());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
+
             if (!(localidad.getCapacidadMaxima() > localidad.getEntradasVendidas() + item.getCantidad())) {
                 throw new Exception("No hay aforo disponible para la localidad elegida");
             } else {
@@ -212,6 +213,11 @@ public class OrdenServicioImpl implements OrdenServicio {
 
     }
 
+
+    @Override
+    public List<Orden> getAll(){
+        return ordenRepo.findAll();
+    }
 
     //private methods
     private Orden obtenerOrden(String id) throws OrdenException {

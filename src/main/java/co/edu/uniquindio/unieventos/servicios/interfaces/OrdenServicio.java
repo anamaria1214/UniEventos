@@ -20,4 +20,6 @@ public interface OrdenServicio {
     void cancelarOrden(String idOrden) throws Exception;
     List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws OrdenException, CuentaException, Exception;
     InformacionOrdenCompraDTO obtenerInformacionOrden(String idOrden)throws OrdenException, Exception;
+
+    List<Orden> getAll();
 }
