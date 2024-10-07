@@ -13,9 +13,9 @@ public interface CuentaServicio{
     Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws CuentaException;
     Cuenta eliminarCuenta(String id) throws Exception;
     InfoAdicionalDTO obtenerInformacionCuenta(String id)  throws Exception;
-    String enviarCodigoRecuperacion(String correo);
-    String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
-    TokenDTO login(LoginDTO loginDTO) throws Exception;
+    void enviarCodigoRecuperacion(String correo) throws Exception;
+    void cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
 
+    TokenDTO login(LoginDTO loginDTO) throws Exception;
     Cuenta obtenerCuenta(String id) throws CuentaException;
 }

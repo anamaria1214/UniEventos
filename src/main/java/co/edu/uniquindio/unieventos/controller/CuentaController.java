@@ -28,7 +28,7 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaServicio.obtenerCuenta(id));
     }
 
-    @GetMapping("/validar-codigo")
+    @PostMapping("/validar-codigo")
     public ResponseEntity<MessageDTO> validarCodigo(@Valid @RequestBody ValidarCodigoDTO validarCodigoDTO) throws CuentaException{
         try {
             cuentaServicio.validarCodig(validarCodigoDTO);
@@ -62,10 +62,26 @@ public class CuentaController {
 
     @PostMapping("/login")
     public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
-        TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
-        return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
+
+        try {
+            TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
+            return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    @PutMapping("/enviarCodigoPassword/{correo}")
+    public ResponseEntity<MensajeDTO<String>> enviarCodigoRecuperacion(@PathVariable("correo") String correo) throws Exception {
+        cuentaServicio.enviarCodigoRecuperacion(correo);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Envio del correo exitoso"));
+    }
 
+    @PostMapping("/cambiarPassword")
+    public ResponseEntity<MensajeDTO<String>> cambioPassword(@Valid @RequestBody CambiarPasswordDTO cambiarPassword) throws Exception {
+        cuentaServicio.cambioPassword(cambiarPassword);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
+    }
 
 }

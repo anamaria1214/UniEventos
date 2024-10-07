@@ -64,7 +64,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         Cuenta cuenta= getCuentaByEmail(validarCodigoDTO.email());
 
         //El codigo no coincide con el enviado
-        if(!cuenta.getCodValidacionRegistro().equals(validarCodigoDTO.codigo())){
+        if(!cuenta.getCodValidacionRegistro().getCodigo().equals(validarCodigoDTO.codigo())){
             throw new CuentaException("El código ingresado es incorrecto");
         }
 
@@ -85,7 +85,6 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuentaUsuario.getUsuario().setNombre(cuenta.nombre());
         cuentaUsuario.getUsuario().setDireccion(cuenta.direccion());
         cuentaUsuario.getUsuario().setTelefono(cuenta.telefono());
-
 
         return cuentaRepo.save(cuentaUsuario);
 
@@ -108,47 +107,46 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
 
     @Override
-    public String enviarCodigoRecuperacion(String correo) {
+    public void enviarCodigoRecuperacion(String correo) throws Exception{
 
         Optional<Cuenta> cuentaOpcional= cuentaRepo.buscarEmail(correo);
 
         Cuenta cUsuario = cuentaOpcional.get();
         String codigoValidacion= generarCodigoValidacion();
 
-        cUsuario.setCodValidacionRegistro(new CodigoValidacion(LocalDateTime.now(), codigoValidacion));
+        cUsuario.setCodValidacionPassword(new CodigoValidacion(LocalDateTime.now(), codigoValidacion));
 
+        emailServicio.enviarCorreo( new EmailDTO("Código de validación", "El código de validación es: "+codigoValidacion+". Este código tiene una duración de 15 minutos, después de este tiempo, no será valido", correo) );
         cuentaRepo.save(cUsuario);
-
-        return "Se ha enviado el código al correo, verifique, es valido por 15 minutos";
     }
 
     @Override
-    public String cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception {
+    public void cambioPassword(CambiarPasswordDTO cambiarPassword) throws CuentaException, Exception {
         Optional<Cuenta> cuentaOpcional= cuentaRepo.buscarEmail(cambiarPassword.email());
 
-        Cuenta cUsuario = cuentaOpcional.get();
-        CodigoValidacion codigoValidacion= cUsuario.getCodValidacionPassword();
 
+        Cuenta cUsuario = cuentaOpcional.get();
+
+        CodigoValidacion codigoValidacion= cUsuario.getCodValidacionPassword();
+        System.out.println("codigo: "+codigoValidacion);
         if(cUsuario.getCodValidacionPassword()!= null){
             if(cUsuario.getCodValidacionPassword().getCodigo().equals(cambiarPassword.codigoVerificacion())){
-                if(codigoValidacion.getFechaCreacion().plusMinutes(15).isBefore(LocalDateTime.now())){
-                    cUsuario.setPassword(cambiarPassword.passwordNueva());
+                if(codigoValidacion.getFechaCreacion().plusMinutes(15).isAfter(LocalDateTime.now())){
+                    cUsuario.setPassword(encriptarPassword(cambiarPassword.passwordNueva()));
                     cuentaRepo.save(cUsuario);
                 }else{
-                    throw  new Exception("Su código de verificación ya expiró");
+                    throw  new CuentaException("Su código de verificación ya expiró");
                 }
             }else{
-                throw new Exception("El código es incorrecto");
+                throw new CuentaException("El código es incorrecto");
             }
         }
-        return null;
     }
 
     @Override
     public TokenDTO login(LoginDTO loginDTO) throws Exception {
         Cuenta cuenta = getCuentaByEmail(loginDTO.correo());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         if( !passwordEncoder.matches(loginDTO.password(), cuenta.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }
@@ -194,7 +192,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     private Map<String, Object> construirClaims(Cuenta cuenta) {
         return Map.of(
                 "rol", cuenta.getRol(),
-                "nombre", cuenta.getUsuario().getNombre(),
+                "nombre", cuenta.getEmail(),
                 "id", cuenta.getId()
         );
     }

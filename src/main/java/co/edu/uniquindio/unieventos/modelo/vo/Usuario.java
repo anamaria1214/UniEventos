@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Usuario {
+public class    Usuario {
 
     private String cedula;
     private String nombre;
