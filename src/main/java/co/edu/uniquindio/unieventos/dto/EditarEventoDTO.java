@@ -7,9 +7,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 public record EditarEventoDTO(
-        String id, String nombre, String descripcion, String direccion, String ciudad,
+        String nombre, String descripcion, String direccion, String ciudad,
         LocalDateTime fecha, TipoEvento tipo, String imagenPortada, String imagenLocalidades,
         List<Localidad> localidades) {
 

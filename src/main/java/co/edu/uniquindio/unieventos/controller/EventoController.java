@@ -51,8 +51,8 @@ public class EventoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> update(@Valid @RequestBody EditarEventoDTO eventoEditar) throws Exception {
-        Evento eventoEditado= eventoServicio.editarEvento(eventoEditar);
+    public ResponseEntity<MessageDTO> update(@PathVariable("id") String id, @Valid @RequestBody EditarEventoDTO eventoEditar) throws Exception {
+        Evento eventoEditado= eventoServicio.editarEvento(id,eventoEditar);
         String message= "El evento "+ eventoEditado.getNombre() +" ha sido actualizado con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }

@@ -36,8 +36,8 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public Evento editarEvento(EditarEventoDTO editarEventoDTO) throws EventoException {
-        Evento evento = obtenerEvento(editarEventoDTO.id());
+    public Evento editarEvento(String idEvento, EditarEventoDTO editarEventoDTO) throws EventoException {
+        Evento evento= obtenerEvento(idEvento);
          if(evento==null){
             throw new EventoException("El evento no existe");
          }
@@ -54,8 +54,12 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public Evento eliminarEvento(String id) throws EventoException {
-
         Evento evento= obtenerEvento(id);
+        if (evento==null){
+            throw new EventoException("No existe ningún evento con ese código de evento");
+        } else if (evento.getEstado().equals(EstadoEvento.INACTIVO)) {
+            throw new EventoException("El evento ya se encuentra inactivo");
+        }
         evento.setEstado(EstadoEvento.INACTIVO);
         return eventoRepo.save(evento);//Se guarda el cambio de estado
     }
