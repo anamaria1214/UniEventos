@@ -32,12 +32,14 @@ public class CarritoServicioImpl implements CarritoServicio {
     }
 
     private Carrito findById(String id) throws CarritoException{
-        try{
-            Optional<Carrito> carritoOptional= carritoRepo.findById(id);
-            return carritoOptional.get();
-        }catch (CarritoException e) {
+
+        Optional<Carrito> carritoOptional= carritoRepo.findById(id);
+
+        if(carritoOptional.isEmpty()){
             throw new CarritoException("Carrito no encontrado");
         }
+
+        return carritoOptional.get();
     }
 
     @Override
