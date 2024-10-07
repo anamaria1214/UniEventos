@@ -63,13 +63,8 @@ public class CuentaController {
     @PostMapping("/login")
     public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
-        try {
-            TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
-            return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
+        return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
     }
 
     @PutMapping("/enviarCodigoPassword/{correo}")
