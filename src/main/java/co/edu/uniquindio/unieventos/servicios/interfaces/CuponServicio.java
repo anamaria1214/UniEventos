@@ -7,6 +7,8 @@ import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuponException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 
+import java.util.List;
+
 public interface CuponServicio {
 
     Cupon crearCupon(CrearCuponDTO cupon) throws Exception;
@@ -22,4 +24,6 @@ public interface CuponServicio {
     Cupon getCuponByCodigo(String codigo) throws CuponException;
     
     boolean verificarVigencia(Cupon cuponAux);
+
+    List<Cupon> getAll();
 }

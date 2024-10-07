@@ -2,7 +2,6 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
 import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
-import co.edu.uniquindio.unieventos.dto.EliminarCuponDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuponException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCupon;
@@ -11,7 +10,6 @@ import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 @Service
@@ -39,6 +37,7 @@ public class CuponServicioImpl implements CuponServicio {
         cupon.setNombre(cuponDTO.getNombre());
         cupon.setDescuento(cuponDTO.getDescuento());
         cupon.setFechaVencimiento(cuponDTO.getFechaVencimiento());
+        cupon.setTipo(cuponDTO.getTipo());
         //Se guarda la nueva información
         return  cuponRepository.save(cupon);
     }
@@ -55,7 +54,7 @@ public class CuponServicioImpl implements CuponServicio {
         if(cupon==null){
             throw new CuponException("No existe el cupón");
         }
-        //Camniamos el estado (No se elimina)
+        //Cambiamos el estado (No se elimina)
         cupon.setEstado(EstadoCupon.NO_DISPONIBLE);
         return cuponRepository.save(cupon);
 
@@ -91,7 +90,7 @@ public class CuponServicioImpl implements CuponServicio {
     public boolean verificarVigencia(Cupon cuponAux){
         return cuponAux.getFechaVencimiento().isBefore(LocalDateTime.now());
     }
-
+    @Override
     public List<Cupon> getAll(){
         return cuponRepository.findAll();
     }
