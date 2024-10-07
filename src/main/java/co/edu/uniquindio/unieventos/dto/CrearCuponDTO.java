@@ -21,7 +21,6 @@ public class CrearCuponDTO {
          @NotNull (message="El estado es obligatorio")
          TipoCupon tipo;
 
-
     public CrearCuponDTO() {
     }
 

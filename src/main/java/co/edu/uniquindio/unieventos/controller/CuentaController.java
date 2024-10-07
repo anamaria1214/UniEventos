@@ -28,6 +28,17 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaServicio.obtenerCuenta(id));
     }
 
+    @GetMapping("/validar-codigo")
+    public ResponseEntity<MessageDTO> validarCodigo(@Valid @RequestBody ValidarCodigoDTO validarCodigoDTO) throws CuentaException{
+        try {
+            cuentaServicio.validarCodig(validarCodigoDTO);
+            String message= "Cuenta activada con exito";
+            return ResponseEntity.ok(new MessageDTO(HttpStatus.OK,message));
+        }catch (CuentaException cx){
+            return ResponseEntity.badRequest().body(new MessageDTO(HttpStatus.BAD_REQUEST,cx.getMessage()));
+        }
+    }
+
     @PostMapping("/crear-cuenta")
     public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception {
         cuentaServicio.crearCuenta(cuentaDTO);
@@ -54,5 +65,7 @@ public class CuentaController {
         TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
         return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
     }
+
+
 
 }
