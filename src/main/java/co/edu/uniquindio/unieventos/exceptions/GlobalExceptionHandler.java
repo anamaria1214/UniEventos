@@ -56,6 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MessageDTO> handleOrdenException(Exception ox){
         String message = ox.getMessage();
+        ox.printStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(HttpStatus.BAD_REQUEST, message));
     }
 

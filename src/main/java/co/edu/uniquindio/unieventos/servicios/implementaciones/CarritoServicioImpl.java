@@ -152,4 +152,9 @@ public class CarritoServicioImpl implements CarritoServicio {
         }
     }
 
+    @Override
+    public void eliminarCarrito(String id) throws CarritoException {
+        carritoRepo.deleteById(id);
+    }
+
 }
