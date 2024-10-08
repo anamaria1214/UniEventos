@@ -68,10 +68,12 @@ public class OrdenServicioImpl implements OrdenServicio {
                 eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), item.getCantidad());
             }
         }
-        Cupon cupon = cuponServicio.getCuponByCodigo(crearOrdenDTO.idCupon());
-        if (cupon != null) {
-            if (cuponServicio.verificarVigencia(cupon)) {
-                total = total * cupon.getDescuento() + total;
+        if(crearOrdenDTO.idCupon()!=null) {
+            Cupon cupon = cuponServicio.getCuponByCodigo(crearOrdenDTO.idCupon());
+            if (cupon != null) {
+                if (cuponServicio.verificarVigencia(cupon)) {
+                    total = total * cupon.getDescuento() + total;
+                }
             }
         }
         Orden orden = new Orden();
@@ -79,6 +81,7 @@ public class OrdenServicioImpl implements OrdenServicio {
         orden.setItems(itemsOrden);
         orden.setIdCuenta(carrito.getIdCuenta());
         orden.setTotal(total);
+        carritoImpl.eliminarCarrito(carrito.getId());
         return ordenRepo.save(orden);
 
     }
@@ -96,12 +99,25 @@ public class OrdenServicioImpl implements OrdenServicio {
     }
 
     @Override
-    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws CuentaException {
+    public List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws Exception,OrdenException,CuentaException {
         Cuenta cuenta = cuentaServicio.obtenerCuenta(idCuenta);
         if(cuenta == null){
             throw new CuentaException("No existe una cuenta con ese ID");
         }
-        return List.of();
+        List<Orden> ordenes = ordenRepo.findAllByIdCuenta(new ObjectId(idCuenta));
+        if(ordenes.isEmpty()){
+            throw new OrdenException("No hay ordenes vinculadas a esta cuenta");
+        }
+        List<ItemOrdenDTO> historialOrdenes = new ArrayList<>();
+        for(Orden orden : ordenes){
+            DetalleOrden detalleOrden = orden.getItems().get(0);
+
+            Evento evento = eventoServicio.obtenerEvento(detalleOrden.getIdEvento());
+            ItemOrdenDTO itemOrdenDTO = new ItemOrdenDTO(evento.getImagenPortada(),evento.getNombre(), evento.getFecha(), detalleOrden.getNombreLocalidad(), detalleOrden.getCantidad(), orden.getTotal());
+            historialOrdenes.add(itemOrdenDTO);
+
+        }
+        return historialOrdenes;
     }
 
     @Override
@@ -144,7 +160,7 @@ public class OrdenServicioImpl implements OrdenServicio {
             itemsPasarela.add(itemRequest);
         }
 
-        MercadoPagoConfig.setAccessToken("ACCESS_TOKEN");
+        MercadoPagoConfig.setAccessToken("APP_USR-272595559782865-100719-958683f0949a50e7a8b92b77f7a696bf-2026139478");
 
 
         // Configurar las urls de retorno de la pasarela (Frontend)
@@ -160,7 +176,7 @@ public class OrdenServicioImpl implements OrdenServicio {
                 .backUrls(backUrls)
                 .items(itemsPasarela)
                 .metadata(Map.of("id_orden", ordenGuardada.getId()))
-                .notificationUrl("https://dfb5-189-50-209-152.ngrok-free.app")
+                .notificationUrl("https://4734-189-50-209-152.ngrok-free.app/orden/notificacion-pago")
                 .build();
 
 

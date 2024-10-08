@@ -21,4 +21,5 @@ public interface CarritoServicio {
     Carrito obtenerCarrito(String id) throws CarritoException;
 
     void crearCarrito(String id) throws CarritoException;
+    void eliminarCarrito(String id) throws CarritoException;
 }
