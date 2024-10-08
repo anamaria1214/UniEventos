@@ -26,13 +26,13 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception {
+    public Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception, EventoException {
+        if(obtenerEvento(crearEventoDTO.getNombre())!=null){
+            throw new EventoException("El evento con el nombre "+crearEventoDTO.getNombre()+" ya existe");
+        }
         Evento evento= new Evento(crearEventoDTO.getNombre(),crearEventoDTO.getDescripcion(),crearEventoDTO.getDireccion(), crearEventoDTO.getCiudad(), crearEventoDTO.getFecha(),EstadoEvento.ACTIVO, crearEventoDTO.getTipo(),crearEventoDTO.getImagenPortada(),crearEventoDTO.getImagenLocalidades());
-
         evento.setLocalidades(crearEventoDTO.getLocalidades());
-
         return  eventoRepo.save(evento);
-
     }
 
     @Override

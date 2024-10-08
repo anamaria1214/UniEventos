@@ -144,7 +144,7 @@ public class OrdenServicioImpl implements OrdenServicio {
             itemsPasarela.add(itemRequest);
         }
 
-        MercadoPagoConfig.setAccessToken("ACCESS_TOKEN");
+        MercadoPagoConfig.setAccessToken("APP_USR-272595559782865-100719-958683f0949a50e7a8b92b77f7a696bf-2026139478");
 
 
         // Configurar las urls de retorno de la pasarela (Frontend)
