@@ -5,6 +5,7 @@ import co.edu.uniquindio.unieventos.dto.InfoAdicionalDTO;
 import co.edu.uniquindio.unieventos.dto.LoginDTO;
 import co.edu.uniquindio.unieventos.dto.ValidarCodigoDTO;
 import co.edu.uniquindio.unieventos.dto.CambiarPasswordDTO;
+import co.edu.uniquindio.unieventos.modelo.enums.Rol;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class CuentaServicioTest {
 
     @Test
     public void crearCuentaTest() {
-        CrearCuentaRegistroDTO cuentaDTO = new CrearCuentaRegistroDTO("user123", "test@example.com", "password123");
+        CrearCuentaRegistroDTO cuentaDTO = new CrearCuentaRegistroDTO("user123", "test@example.com", "password123", Rol.CLIENTE);
         assertDoesNotThrow(() -> {
             cuentaServicio.crearCuenta(cuentaDTO);
         });
