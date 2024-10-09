@@ -4,6 +4,7 @@ package co.edu.uniquindio.unieventos.controller;
 import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
+import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.servicios.implementaciones.CuentaServicioImpl;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
@@ -40,7 +41,7 @@ public class CuentaController {
     }
 
     @PostMapping("/crear-cuenta")
-    public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception {
+    public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception, PasswordException {
         cuentaServicio.crearCuenta(cuentaDTO);
         String message= "La cuenta ha sido creada con exito";
         return ResponseEntity.ok(new MensajeDTO<>(false, message));

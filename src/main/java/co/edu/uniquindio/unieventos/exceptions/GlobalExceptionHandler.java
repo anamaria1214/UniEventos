@@ -56,7 +56,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MessageDTO> handleOrdenException(Exception ox){
         String message = ox.getMessage();
-        ox.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(HttpStatus.BAD_REQUEST, message));
+    }
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<MessageDTO> handlePasswordException(PasswordException ox){
+        String message = ox.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(HttpStatus.BAD_REQUEST, message));
     }
 

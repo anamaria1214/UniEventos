@@ -26,7 +26,6 @@ public class EmailServicioImpl implements EmailServicio {
                 .withPlainText(emailDTO.cuerpo())
                 .buildEmail();
 
-
         try (Mailer mailer = MailerBuilder
                 .withSMTPServer("smtp.gmail.com", 587, "unieventosq@gmail.com", "uljn laxv yiwk eerv")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)

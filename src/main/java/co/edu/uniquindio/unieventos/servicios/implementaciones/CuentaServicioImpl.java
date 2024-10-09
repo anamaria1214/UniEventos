@@ -3,6 +3,7 @@ package co.edu.uniquindio.unieventos.servicios.implementaciones;
 import co.edu.uniquindio.unieventos.config.JWTUtils;
 import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
+import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
@@ -36,7 +37,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     }
     //Metodos de la cuenta
     @Override
-    public void crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception {
+    public void crearCuenta(CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception,PasswordException {
 
         Optional<Cuenta> cuentaExistente = cuentaRepo.buscarEmail(cuentaDTO.correo());
 
@@ -48,8 +49,12 @@ public class CuentaServicioImpl implements CuentaServicio {
 
         Cuenta cuenta= new Cuenta();
         cuenta.setEmail(cuentaDTO.correo());
-        cuenta.setPassword(encriptarPassword(cuentaDTO.password())); //Se encripta la contraseña
-        cuenta.setRol(Rol.CLIENTE);
+        if(cuentaDTO.password().length()<=8){
+            throw new PasswordException("La contraseña debe de constar de mas de 8 caracteres");
+        }else{
+            cuenta.setPassword(encriptarPassword(cuentaDTO.password())); //Se encripta la contraseña
+        }
+        cuenta.setRol(cuentaDTO.rol());//Como se pueden crear clientes y administradores, hay que validar esto
         cuenta.setFechaRegistro(LocalDateTime.now());
         cuenta.setEstado(EstadoCuenta.INACTIVO);
         cuenta.setUsuario(new Usuario(cuentaDTO.idUsuario(), null, null, null));

@@ -1,12 +1,13 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 
 public interface CuentaServicio{
 
-    void crearCuenta(CrearCuentaRegistroDTO cuenta) throws Exception;
+    void crearCuenta(CrearCuentaRegistroDTO cuenta) throws CuentaException, Exception, PasswordException;
     ValidarCodigoDTO validarCodig(ValidarCodigoDTO validarCodigoDTO);
     Cuenta editarCuenta(InfoAdicionalDTO cuenta) throws CuentaException;
     Cuenta eliminarCuenta(String id) throws Exception;
