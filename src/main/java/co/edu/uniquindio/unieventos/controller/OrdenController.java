@@ -20,7 +20,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/orden")
+@RequestMapping("/api/orden")
 
 public class OrdenController {
     @Autowired

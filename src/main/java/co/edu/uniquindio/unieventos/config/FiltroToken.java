@@ -40,26 +40,29 @@ public class FiltroToken extends OncePerRequestFilter {
         if (request.getMethod().equals("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-
-
             //Obtener la URI de la petición que se está realizando
             String requestURI = request.getRequestURI();
 
             //Se obtiene el token de la petición del encabezado del mensaje HTTP
             String token = getToken(request);
             boolean error = true;
-
-
             try {
 
                 //Si la petición es para la ruta /api/cliente se verifica que el token exista y que el rol sea CLIENTE
-                if (requestURI.startsWith("/api/cliente")) {
+                if (requestURI.startsWith("/api/cuenta")) {
                     error = validarToken(token, Rol.CLIENTE);
-                } else {
+                }else if(requestURI.startsWith("/api/carrito")){
+                    error = validarToken(token, Rol.CLIENTE);
+                }else if(requestURI.startsWith("/api/orden")){
+                    error = validarToken(token, Rol.CLIENTE);
+                }else if(requestURI.startsWith("/api/evento")){
+                    error = validarToken(token, Rol.ADMINISTRADOR);
+                }else if(requestURI.startsWith("/api/cupon")){
+                    error = validarToken(token, Rol.ADMINISTRADOR);
+                }
+                else {
                     error = false;
                 }
-
-                //Agregar la validación para las peticiones que sean de los administradores
 
                 //Si hay un error se crea una respuesta con el mensaje del error
                 if (error) {

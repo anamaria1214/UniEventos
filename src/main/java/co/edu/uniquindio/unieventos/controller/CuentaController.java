@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cuenta/api")
+@RequestMapping("/api/cuenta")
 public class CuentaController {
 
     private final CuentaServicio cuentaServicio;

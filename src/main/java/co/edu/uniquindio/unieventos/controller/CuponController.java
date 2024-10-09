@@ -18,7 +18,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/cupon")
+@RequestMapping("/api/cupon")
 public class CuponController {
 
 
