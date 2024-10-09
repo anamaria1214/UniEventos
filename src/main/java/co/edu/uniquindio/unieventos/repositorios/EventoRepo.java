@@ -19,4 +19,7 @@ public interface EventoRepo extends MongoRepository<Evento, String> {
             "{ 'ciudad': { $regex: ?2, $options: 'i' } }" +
             "]}")
     List<Evento> filtrarEventos(String nombre, String tipo, String ciudad);
+    @Query("{nombre:  ?0}")
+    Optional<Evento> getByName(String nombre);
+
 }

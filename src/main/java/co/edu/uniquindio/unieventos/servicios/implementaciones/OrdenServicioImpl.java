@@ -1,11 +1,9 @@
 package co.edu.uniquindio.unieventos.servicios.implementaciones;
 
 
-import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
-import co.edu.uniquindio.unieventos.dto.DetalleOrdenDTO;
-import co.edu.uniquindio.unieventos.dto.InformacionOrdenCompraDTO;
-import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
+import co.edu.uniquindio.unieventos.exceptions.EventoException;
 import co.edu.uniquindio.unieventos.exceptions.OrdenException;
 import co.edu.uniquindio.unieventos.modelo.documentos.*;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
@@ -13,10 +11,7 @@ import co.edu.uniquindio.unieventos.modelo.vo.DetalleOrden;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
 import co.edu.uniquindio.unieventos.modelo.vo.Pago;
 import co.edu.uniquindio.unieventos.repositorios.OrdenRepo;
-import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
-import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
-import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
-import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.*;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
@@ -44,6 +39,7 @@ public class OrdenServicioImpl implements OrdenServicio {
 
     private final CarritoServicio carritoImpl;
     private final EventoServicio eventoServicio;
+    private final EmailServicio emailServicio;
     private final OrdenRepo ordenRepo;
     private final CuponServicio cuponServicio;
     private final CuentaServicioImpl cuentaServicio;
@@ -229,6 +225,23 @@ public class OrdenServicioImpl implements OrdenServicio {
 
     }
 
+    /**
+     * Obtiene cada evento para poder acceder a la fecha, si la fecha del evento es igual a la fecha dentro de 24 horas manda el correo
+     * Está la lógica, solo que todavia no imagino como conectarlo bien con el front XD
+     * @param idCuenta
+     * @throws Exception
+     */
+    @Override
+    public void enviarNotificacion(String idCuenta) throws Exception, EventoException {
+        Cuenta cuenta= cuentaServicio.obtenerCuenta(idCuenta);
+        List<ItemOrdenDTO> ordenes= obtenerHistorialOrdenes(idCuenta);
+        for (ItemOrdenDTO itemOrden : ordenes) {
+            Evento evento= eventoServicio.getByName(itemOrden.nombresEvento1());
+            if (evento.getFecha().equals(LocalDateTime.now().plusDays(1))) {
+                emailServicio.enviarCorreo( new EmailDTO("Tu evento está a la vuelta de la esquina ", "El evento '" + evento.getNombre()+ "' está a tan solo un dia, ¿Estás listo para disfrutar al máximo?", cuenta.getEmail()) );
+            }
+        }
+    }
 
     @Override
     public List<Orden> getAll(){

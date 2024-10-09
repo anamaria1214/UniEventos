@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unieventos.servicios.interfaces;
 
 import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.exceptions.EventoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import java.util.List;
 
@@ -19,7 +20,9 @@ public interface EventoServicio {
 
     List<ItemEventoDTO> filtrarEventos(FiltroEventoDTO filtroEventoDTO);
 
-    Evento obtenerEvento(String id) throws Exception;
+    Evento obtenerEvento(String id) throws EventoException;
+
+    Evento getByName(String name) throws EventoException;
 
     List<Evento> getAll();
 

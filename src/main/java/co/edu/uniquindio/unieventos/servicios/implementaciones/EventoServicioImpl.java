@@ -2,7 +2,6 @@
 
 import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.exceptions.EventoException;
-import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 import co.edu.uniquindio.unieventos.modelo.vo.Localidad;
@@ -124,6 +123,10 @@ public class EventoServicioImpl implements EventoServicio {
     @Override
     public Evento obtenerEvento(String id) throws EventoException {
         return eventoRepo.findById(id).orElseThrow( () -> new EventoException("El evento no existe") );
+    }
+    @Override
+    public Evento getByName(String name) throws EventoException{
+        return eventoRepo.getByName(name).orElseThrow(()->new EventoException("El evento " + name+" no existe"));
     }
 
     @Override

@@ -21,5 +21,7 @@ public interface OrdenServicio {
     List<ItemOrdenDTO> obtenerHistorialOrdenes(String idCuenta) throws OrdenException, CuentaException, Exception;
     InformacionOrdenCompraDTO obtenerInformacionOrden(String idOrden)throws OrdenException, Exception;
 
+    void enviarNotificacion(String idCuenta) throws Exception;
+
     List<Orden> getAll();
 }
