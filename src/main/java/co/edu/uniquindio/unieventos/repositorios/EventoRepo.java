@@ -2,6 +2,7 @@ package co.edu.uniquindio.unieventos.repositorios;
 
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
+import co.edu.uniquindio.unieventos.modelo.enums.EstadoEvento;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,5 @@ public interface EventoRepo extends MongoRepository<Evento, String> {
     List<Evento> filtrarEventos(String nombre, String tipo, String ciudad);
     @Query("{nombre:  ?0}")
     Optional<Evento> getByName(String nombre);
-
+    List<Evento> getEventosByEstado(EstadoEvento estadoEvento);
 }

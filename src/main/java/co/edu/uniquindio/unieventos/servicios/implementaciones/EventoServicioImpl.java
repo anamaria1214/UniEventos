@@ -133,6 +133,11 @@ public class EventoServicioImpl implements EventoServicio {
     public List<Evento> getAll() {
         return eventoRepo.findAll();
     }
+    @Override
+    public List<Evento> getAllDisponibles() throws EventoException{
+        return eventoRepo.getEventosByEstado(EstadoEvento.ACTIVO);
+    }
+
 
     @Override
     public void actualizarCapacidadLocalidad(Evento evento, String nombreLocalidad, int entradasVendidas) throws Exception {

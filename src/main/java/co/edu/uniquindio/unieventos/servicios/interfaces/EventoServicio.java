@@ -26,5 +26,7 @@ public interface EventoServicio {
 
     List<Evento> getAll();
 
+    List<Evento> getAllDisponibles() throws EventoException;
+
     void actualizarCapacidadLocalidad(Evento evento, String nombreLocalidad, int entradasVendidas) throws Exception;
 }

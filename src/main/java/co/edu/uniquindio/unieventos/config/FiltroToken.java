@@ -52,8 +52,12 @@ public class FiltroToken extends OncePerRequestFilter {
 
                 if(requestURI.startsWith("/api/carrito")){
                     error = validarToken(token, Rol.CLIENTE);
+                }else if(requestURI.startsWith("/api/cuenta")){
+                    error = validarToken(token, Rol.CLIENTE);
                 }else if(requestURI.startsWith("/api/orden")){
                     error = validarToken(token, Rol.CLIENTE);
+                }else if(requestURI.startsWith("/api/cuenta")){
+                    error = validarToken(token, Rol.ADMINISTRADOR);
                 }else if(requestURI.startsWith("/api/evento")){
                     error = validarToken(token, Rol.ADMINISTRADOR);
                 }else if(requestURI.startsWith("/api/cupon")){

@@ -60,7 +60,8 @@ public class CuentaController {
         String message= "La cuenta ha sido eliminada con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }
-
+    /**
+     * Los comento para debatir sobre si deberian de ser publicos, ya que si no se acuerdq la contraseña no puede tener un token y no podra editar la cuenta
     @PostMapping("/login")
     public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
@@ -79,5 +80,5 @@ public class CuentaController {
         cuentaServicio.cambioPassword(cambiarPassword);
         return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
     }
-
+    **/
 }
