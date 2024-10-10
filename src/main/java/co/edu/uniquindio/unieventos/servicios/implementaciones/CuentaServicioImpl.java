@@ -129,6 +129,9 @@ public class CuentaServicioImpl implements CuentaServicio {
     public void cambioPassword(CambiarPasswordDTO cambiarPassword) throws CuentaException, Exception {
         Optional<Cuenta> cuentaOpcional= cuentaRepo.buscarEmail(cambiarPassword.email());
 
+        if(cuentaOpcional.isEmpty()){
+            throw new CuentaException("Cuenta no encontrada");
+        }
 
         Cuenta cUsuario = cuentaOpcional.get();
 
