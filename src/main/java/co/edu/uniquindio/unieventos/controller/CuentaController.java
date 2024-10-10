@@ -49,7 +49,7 @@ public class CuentaController {
 
     @PutMapping("/editar-cuenta")
     public ResponseEntity<MessageDTO> update(@Valid @RequestBody InfoAdicionalDTO cuentaDTO) throws CuentaException{
-        Cuenta cuentaEditada= cuentaServicio.editarCuenta(cuentaDTO);
+        cuentaServicio.editarCuenta(cuentaDTO);
         String message= "La cuenta ha sido modificada con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }

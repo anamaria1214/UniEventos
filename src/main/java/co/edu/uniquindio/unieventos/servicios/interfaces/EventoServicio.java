@@ -8,7 +8,7 @@ import java.util.List;
 public interface EventoServicio {
 
 
-    Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception;
+    Evento crearEvento(CrearEventoDTO crearEventoDTO) throws Exception,EventoException;
 
     Evento editarEvento(String idEvento, EditarEventoDTO editarEventoDTO) throws Exception;
 

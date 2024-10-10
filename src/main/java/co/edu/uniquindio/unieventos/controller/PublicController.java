@@ -1,10 +1,10 @@
 package co.edu.uniquindio.unieventos.controller;
 
 import co.edu.uniquindio.unieventos.config.JWTUtils;
-import co.edu.uniquindio.unieventos.dto.CambiarPasswordDTO;
-import co.edu.uniquindio.unieventos.dto.LoginDTO;
-import co.edu.uniquindio.unieventos.dto.MensajeDTO;
-import co.edu.uniquindio.unieventos.dto.TokenDTO;
+import co.edu.uniquindio.unieventos.dto.*;
+import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuentaException;
+import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
 import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
@@ -13,6 +13,7 @@ import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +39,25 @@ public class PublicController {
     public ResponseEntity<List<Evento>> getAllDisponibles(){
         return ResponseEntity.ok(eventoServicio.getAllDisponibles());
     }
+    @PostMapping("/validar-codigo")
+    public ResponseEntity<MessageDTO> validarCodigo(@Valid @RequestBody ValidarCodigoDTO validarCodigoDTO) throws CuentaException{
+        try {
+            cuentaServicio.validarCodig(validarCodigoDTO);
+            String message= "Cuenta activada con exito";
+            return ResponseEntity.ok(new MessageDTO(HttpStatus.OK,message));
+        }catch (CuentaException cx){
+            return ResponseEntity.badRequest().body(new MessageDTO(HttpStatus.BAD_REQUEST,cx.getMessage()));
+        }
+    }
 
-    @PutMapping("/login")
+    @PostMapping("/crear-cuenta")
+    public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception, PasswordException {
+        cuentaServicio.crearCuenta(cuentaDTO);
+        String message= "La cuenta ha sido creada con exito";
+        return ResponseEntity.ok(new MensajeDTO<>(false, message));
+    }
+
+    @PostMapping("/login")
     public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
         TokenDTO tokenDTO= cuentaServicio.login(loginDTO);

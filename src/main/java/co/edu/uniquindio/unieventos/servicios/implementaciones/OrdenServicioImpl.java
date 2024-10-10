@@ -232,8 +232,11 @@ public class OrdenServicioImpl implements OrdenServicio {
      * @throws Exception
      */
     @Override
-    public void enviarNotificacion(String idCuenta) throws Exception, EventoException {
+    public void enviarNotificacion(String idCuenta) throws Exception, EventoException,CuentaException {
         Cuenta cuenta= cuentaServicio.obtenerCuenta(idCuenta);
+        if(cuenta==null){
+            throw new CuentaException("La cuenta no existe");
+        }
         List<ItemOrdenDTO> ordenes= obtenerHistorialOrdenes(idCuenta);
         for (ItemOrdenDTO itemOrden : ordenes) {
             Evento evento= eventoServicio.getByName(itemOrden.nombresEvento1());
