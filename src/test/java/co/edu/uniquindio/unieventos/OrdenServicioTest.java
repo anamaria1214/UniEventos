@@ -1,14 +1,17 @@
 package co.edu.uniquindio.unieventos;
 
 import co.edu.uniquindio.unieventos.dto.CrearOrdenDTO;
+import co.edu.uniquindio.unieventos.dto.InformacionOrdenCompraDTO;
+import co.edu.uniquindio.unieventos.dto.ItemOrdenDTO;
 import co.edu.uniquindio.unieventos.modelo.documentos.Orden;
 import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class OrdenServicioTest {
@@ -26,6 +29,32 @@ public class OrdenServicioTest {
             assertNotNull(orden);
         });
 
+    }
+    @Test
+    public void cancelarOrdenTest(){
+        String id = "6703a8d9baeae320d8bafc04";
+        assertDoesNotThrow(()->{
+            ordenServicio.cancelarOrden(id);
+            List<ItemOrdenDTO> ordenes = ordenServicio.obtenerHistorialOrdenes(id);
+            assertNull(ordenes);
+        });
+    }
+
+    @Test
+    public void historial(){
+        String id ="";
+        assertDoesNotThrow(()->{
+           List<ItemOrdenDTO> ordenes = ordenServicio.obtenerHistorialOrdenes(id);
+           assertNotNull(ordenes);
+        });
+    }
+    @Test
+    public void detalleOrden(){
+        String id ="";
+        assertDoesNotThrow(()->{
+            InformacionOrdenCompraDTO info = ordenServicio.obtenerInformacionOrden(id);
+            assertNotNull(info);
+        });
     }
 
 }
