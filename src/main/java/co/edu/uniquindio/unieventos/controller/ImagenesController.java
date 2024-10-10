@@ -16,7 +16,7 @@ public class ImagenesController {
     private final ImagenesServicio imagenesServicio;
 
     @PostMapping("/subir")
-    public ResponseEntity<MensajeDTO<String>>subir(@RequestParam ("imagen") MultipartFile imagen) throws Exception{
+    public ResponseEntity<MensajeDTO<String>>subir(@RequestParam("imagen") MultipartFile imagen) throws Exception{
         String mensaje= imagenesServicio.subirImagen(imagen);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,mensaje));
     }

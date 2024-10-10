@@ -15,13 +15,13 @@ public class FirebaseConfig {
     @Bean
     public FirebaseApp intializeFirebase() throws IOException {
         FileInputStream serviceAccount = new FileInputStream(
-                "src/main/resources/proyecto-avanzada-2fe8f-firebase-adminsdk-2c2oy-417e7a90e9.json"
+                "src/main/resources/proyecto-avanzada-2fe8f-firebase-adminsdk-2c2oy-96e214b225.json"
         );
 
 
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket("Proyecto Avanzada")
+                .setStorageBucket("proyecto-avanzada-2fe8f.appspot.com")
                 .build();
 
 

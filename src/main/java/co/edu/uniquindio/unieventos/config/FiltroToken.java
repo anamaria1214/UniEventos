@@ -51,7 +51,7 @@ public class FiltroToken extends OncePerRequestFilter {
                 if(requestURI.startsWith("/api/carrito")){
                     error = validarToken(token, Rol.CLIENTE);
                 }else if(requestURI.startsWith("/api/cuenta")){
-                    error = validarToken(token, Rol.CLIENTE) ||    validarToken(token,Rol.ADMINISTRADOR); //Verificar como hacer que ambos puedan acceder
+                    error = validarToken(token, Rol.CLIENTE) || validarToken(token,Rol.ADMINISTRADOR); //Verificar como hacer que ambos puedan acceder
                 }else if(requestURI.startsWith("/api/orden")){
                     error = validarToken(token, Rol.CLIENTE);
                 }else if(requestURI.startsWith("/api/evento")){
