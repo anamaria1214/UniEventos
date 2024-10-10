@@ -25,6 +25,9 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
      public void calificarEvento(CalificacionDTO calificacionDTO) throws Exception {
          Cuenta cuenta = cuentaServicio.getCuentaByEmail(calificacionDTO.emailUsuario());
+         if(cuenta==null){
+             throw new Exception("Cuenta no existente");
+         }
 
             if (calificacionDTO.puntuacion() < 1 || calificacionDTO.puntuacion() > 5) {
                 throw new Exception("La puntuación debe estar entre 1 y 5");
@@ -33,7 +36,6 @@ public class CalificacionServicioImpl implements CalificacionServicio {
             Optional<Calificacion> calificacionExistente = calificacionRepo.findByCuentaAndEvento(cuenta.getId(), calificacionDTO.idEvento());
 
             if (calificacionExistente.isPresent()) {
-                // Si el usuario ya calificó, puedes lanzar una excepción o permitir que edite su calificación
                 Calificacion calificacion = calificacionExistente.get();
                 calificacion.setCalificacion(calificacion.getCalificacion());
             } else {

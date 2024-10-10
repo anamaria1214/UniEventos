@@ -51,7 +51,6 @@ db.cupones.insertMany([
     }
 ]);
 
-
 db.cuentas.insertMany([
     {
         "_id": ObjectId("6701a8f9baeae320b8bafc01"),

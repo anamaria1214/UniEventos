@@ -29,7 +29,7 @@ public class EventoServicioImpl implements EventoServicio {
         if(obtenerEvento(crearEventoDTO.getNombre())!=null){
             throw new EventoException("El evento con el nombre "+crearEventoDTO.getNombre()+" ya existe");
         }
-        Evento evento= new Evento(crearEventoDTO.getNombre(),crearEventoDTO.getDescripcion(),crearEventoDTO.getDireccion(), crearEventoDTO.getCiudad(), crearEventoDTO.getFecha(),EstadoEvento.ACTIVO, crearEventoDTO.getTipo(),crearEventoDTO.getImagenPortada(),crearEventoDTO.getImagenLocalidades());
+        Evento evento= new Evento(crearEventoDTO.getNombre(),crearEventoDTO.getDescripcion(),crearEventoDTO.getDireccion(), crearEventoDTO.getCiudad(), crearEventoDTO.getFecha(),EstadoEvento.ACTIVO, crearEventoDTO.getTipo(),crearEventoDTO.getImagenPortada(),crearEventoDTO.getImagenLocalidades(), 0);
         evento.setLocalidades(crearEventoDTO.getLocalidades());
         return  eventoRepo.save(evento);
     }
