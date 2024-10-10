@@ -12,7 +12,7 @@ public class DetalleCarrito {
 
     private int cantidad;
     private String nombreLocalidad;
-    private String idEvento;
+    private ObjectId idEvento;
 
 
 }

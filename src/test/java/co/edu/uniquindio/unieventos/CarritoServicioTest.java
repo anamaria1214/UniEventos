@@ -18,7 +18,7 @@ public class CarritoServicioTest {
 
     @Test
     public void agregarEventoCarritoTest() {
-        CarritoDTO agregarCarritoDTO = new CarritoDTO("6402b8e9baeae320c8bafc05", "6704b1e9baeae320d8cafc01", 4, "VIP");
+        CarritoDTO agregarCarritoDTO = new CarritoDTO("67083d753ed69302c240c7f2", "67083d48a2c04d46b5ff92ed", 4, "Platea");
 
         assertDoesNotThrow(() -> {
             carritoServicio.agregarEventoCarrito(agregarCarritoDTO);
@@ -63,7 +63,7 @@ public class CarritoServicioTest {
 
     @Test
     public void crearCarritoTest() {
-        String cuentaId = "6701a8f9baeae320b8bafc01";
+        String cuentaId = "6701a8f9baeae320b8bafc05";
 
         assertDoesNotThrow(() -> {
             carritoServicio.crearCarrito(cuentaId);

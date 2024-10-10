@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CarritoException.class)
     public ResponseEntity<MessageDTO> handleCarritoException(CarritoException ex) {
+        ex.printStackTrace();
         String message = ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(HttpStatus.BAD_REQUEST, message));
     }
