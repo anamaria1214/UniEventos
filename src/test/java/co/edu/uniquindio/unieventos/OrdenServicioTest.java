@@ -21,7 +21,7 @@ public class OrdenServicioTest {
     public void crearOrdenTest() {
 
         CrearOrdenDTO crearOrdenDTO = new CrearOrdenDTO(
-                "6701a8f9baeae320b8bafc01","","6704b1e9baeae320d8cafc01"
+                "6701a8f9baeae320b8bafc01","","6704b1e9baeae320d8cafc02"
         );
         assertDoesNotThrow(()->
         {

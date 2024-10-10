@@ -37,10 +37,10 @@ public class Evento {
     private String imagenPortada;
     private String imagenLocalidades;
     private List<Localidad> localidades;
-
+    private double promedioCalificaciones;
 
     @Builder
-    public Evento( String nombre, String descripcion, String direccion, String ciudad, LocalDateTime fecha, EstadoEvento estado, TipoEvento tipo, String imagenPortada, String imagenLocalidades) {
+    public Evento( String nombre, String descripcion, String direccion, String ciudad, LocalDateTime fecha, EstadoEvento estado, TipoEvento tipo, String imagenPortada, String imagenLocalidades, double promedioCalificaciones) {
 
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -52,6 +52,7 @@ public class Evento {
         this.imagenPortada = imagenPortada;
         this.imagenLocalidades = imagenLocalidades;
         this.localidades = new ArrayList<>();
+        this.promedioCalificaciones = promedioCalificaciones;
     }
 
     public Localidad obtenerLocalidad(String nombre) throws Exception {

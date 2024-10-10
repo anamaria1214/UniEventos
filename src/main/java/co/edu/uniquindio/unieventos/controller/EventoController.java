@@ -1,12 +1,15 @@
 package co.edu.uniquindio.unieventos.controller;
 
 
+import co.edu.uniquindio.unieventos.dto.CalificacionDTO;
 import co.edu.uniquindio.unieventos.dto.CrearEventoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarEventoDTO;
+import co.edu.uniquindio.unieventos.dto.MensajeDTO;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.servicios.implementaciones.EventoServicioImpl;
 import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
 
+import co.edu.uniquindio.unieventos.servicios.interfaces.CalificacionServicio;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,7 @@ public class EventoController {
 
     @Autowired
     EventoServicioImpl eventoServicio;
+    private CalificacionServicio calificacionServicio;
 
     /**
      * Metodo para obtener toda la lista de eventos disponibles
@@ -41,7 +45,6 @@ public class EventoController {
     public ResponseEntity<Evento> getOne(@PathVariable("id") String id) throws Exception {
         return ResponseEntity.ok(eventoServicio.obtenerEvento(id));
     }
-
 
     @PostMapping("/save")
     public ResponseEntity<MessageDTO> save(@Valid @RequestBody CrearEventoDTO crearEventoDTO) throws Exception {
@@ -64,6 +67,16 @@ public class EventoController {
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }
 
+    @PutMapping("/calificar")
+    public ResponseEntity<MensajeDTO<String>> calificarEvento(@Valid @RequestBody CalificacionDTO calificacionDTO) throws Exception {
+        calificacionServicio.calificarEvento(calificacionDTO);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Evento calificado correctamente"));
+    }
 
+    @GetMapping("/obtenerPromedio/{idEvento}")
+    public ResponseEntity<MensajeDTO<Double>> obtenerPromedioCalificaciones(String idEvento) throws Exception {
+        double promedio= calificacionServicio.obtenerPromedioCalificaciones(idEvento);
+        return ResponseEntity.ok(new MensajeDTO<>(false, promedio));
+    }
 
 }

@@ -48,16 +48,12 @@ public class FiltroToken extends OncePerRequestFilter {
             boolean error = true;
             try {
 
-                //Si la petición es para la ruta /api/cliente se verifica que el token exista y que el rol sea CLIENTE
-
                 if(requestURI.startsWith("/api/carrito")){
                     error = validarToken(token, Rol.CLIENTE);
                 }else if(requestURI.startsWith("/api/cuenta")){
-                    error = validarToken(token, Rol.CLIENTE);
+                    error = validarToken(token, Rol.CLIENTE) ||    validarToken(token,Rol.ADMINISTRADOR); //Verificar como hacer que ambos puedan acceder
                 }else if(requestURI.startsWith("/api/orden")){
                     error = validarToken(token, Rol.CLIENTE);
-                }else if(requestURI.startsWith("/api/cuenta")){
-                    error = validarToken(token, Rol.ADMINISTRADOR);
                 }else if(requestURI.startsWith("/api/evento")){
                     error = validarToken(token, Rol.ADMINISTRADOR);
                 }else if(requestURI.startsWith("/api/cupon")){

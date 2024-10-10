@@ -33,7 +33,7 @@ public class CuentaServicioTest {
     }
     @Test
     public void editarCuentaTest() {
-        InfoAdicionalDTO cuentaDTO = new InfoAdicionalDTO("miguel.florez@example.com", "Carlos", "Direccion nueva", "123456789");
+        InfoAdicionalDTO cuentaDTO = new InfoAdicionalDTO("miguel.florez@example.com", "123456789", "Direccion nueva", "Carlos");
         assertDoesNotThrow(() -> {
             cuentaServicio.editarCuenta(cuentaDTO);
         });
@@ -47,7 +47,7 @@ public class CuentaServicioTest {
     }
     @Test
     public void loginTest() throws Exception {
-        LoginDTO loginDTO = new LoginDTO("miguel.florez@example.com", "password123");
+        LoginDTO loginDTO = new LoginDTO("miguel.florez@example.com", "newPassword");
 
         assertDoesNotThrow(() -> {
             cuentaServicio.login(loginDTO);
@@ -55,7 +55,7 @@ public class CuentaServicioTest {
     }
     @Test
     public void validarCodigoTest() {
-        ValidarCodigoDTO validarCodigoDTO = new ValidarCodigoDTO("miguel.florez@example.com", "1234");
+        ValidarCodigoDTO validarCodigoDTO = new ValidarCodigoDTO("miguel.florez@example.com", "5678");
 
         assertDoesNotThrow(() -> {
             cuentaServicio.validarCodig(validarCodigoDTO);
@@ -63,7 +63,7 @@ public class CuentaServicioTest {
     }
     @Test
     public void cambioPasswordTest() {
-        CambiarPasswordDTO cambiarPasswordDTO = new CambiarPasswordDTO("miguel.florez@example.com", "1234", "newPassword");
+        CambiarPasswordDTO cambiarPasswordDTO = new CambiarPasswordDTO("1234", "miguel.florez@example.com", "newPassword");
 
         assertDoesNotThrow(() -> {
             cuentaServicio.cambioPassword(cambiarPasswordDTO);

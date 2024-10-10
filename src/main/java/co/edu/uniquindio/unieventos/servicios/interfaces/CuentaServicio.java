@@ -16,4 +16,5 @@ public interface CuentaServicio{
     void cambioPassword(CambiarPasswordDTO cambiarPassword) throws Exception;
     TokenDTO login(LoginDTO loginDTO) throws Exception;
     Cuenta obtenerCuenta(String id) throws CuentaException;
+    Cuenta getCuentaByEmail(String email);
 }
