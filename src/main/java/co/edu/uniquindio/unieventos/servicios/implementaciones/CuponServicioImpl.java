@@ -1,24 +1,34 @@
 package co.edu.uniquindio.unieventos.servicios.implementaciones;
 import co.edu.uniquindio.unieventos.dto.CrearCuponDTO;
-import co.edu.uniquindio.unieventos.dto.CuponEnviadoDTO;
 import co.edu.uniquindio.unieventos.dto.EditarCuponDTO;
+import co.edu.uniquindio.unieventos.dto.EmailDTO;
+import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.exceptions.CuponException;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCupon;
+import co.edu.uniquindio.unieventos.modelo.enums.TipoCupon;
+import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuponServicio;
 import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
+import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CuponServicioImpl implements CuponServicio {
 
     private final CuponRepo cuponRepository;
-
-    public CuponServicioImpl(CuponRepo cuponRepository) {
+    private final CuentaRepo cuentaRepository;
+    private final EmailServicio emailServicio;
+    public CuponServicioImpl(CuponRepo cuponRepository, CuentaRepo cuentaRepository, EmailServicio emailServicio) {
         this.cuponRepository = cuponRepository;
+        this.cuentaRepository = cuentaRepository;
+        this.emailServicio = emailServicio;
     }
 
     @Override
@@ -78,8 +88,20 @@ public class CuponServicioImpl implements CuponServicio {
     }
 
     @Override
-    public String enviarCupon(CuponEnviadoDTO cuponEnviado) throws Exception {
-        return null;
+    public void enviarCupon(String email) throws Exception {
+        Optional<Cuenta> cuenta= cuentaRepository.buscarEmail(email);
+        if (cuenta.isEmpty()){
+            throw new CuentaException("No existe la cuenta");
+        }
+        Cuenta cuentaUser= cuenta.get();
+        String codigoCupon= generarCodigoValidacion();
+        String nombre = "Descuento de Bienvenida";
+        float descuento = 15.5f;
+        LocalDateTime fechaVencimiento = LocalDateTime.of(2024, 12, 31, 23, 59);
+        TipoCupon tipo = TipoCupon.UNICO;
+        Cupon nuevoCupon = new Cupon(nombre, descuento, fechaVencimiento, codigoCupon,EstadoCupon.DISPONIBLE ,tipo);
+        emailServicio.enviarCorreo(new EmailDTO("Bienvenido, gracias por registrarte", "Al registrarte tienes un código del 15% de descunto: "+codigoCupon+" este código es redimible una vez en cualquier orden", email));
+        cuponRepository.save(nuevoCupon);
     }
 
     @Override
@@ -94,4 +116,20 @@ public class CuponServicioImpl implements CuponServicio {
     public List<Cupon> getAll(){
         return cuponRepository.findAll();
     }
+
+    //--------------PRIVATES---------------
+    private String generarCodigoValidacion(){
+
+        String cadena ="ABCDEFGHIJKMNÑOPQRSTUVWXYZ1234567890";
+        String resul="";
+
+        for(int i=0; i<6;i++){
+            int indice = (int) (Math.random()*cadena.length());
+            char car= cadena.charAt(indice);
+            resul+=car;
+        }
+        return resul;
+    }
+
+
 }
