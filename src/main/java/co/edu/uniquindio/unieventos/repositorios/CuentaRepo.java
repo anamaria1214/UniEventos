@@ -18,4 +18,5 @@ public interface CuentaRepo extends MongoRepository<Cuenta, String> {
     Optional<Cuenta> buscarEmail(String email);
 
 
+    String obtenerRolPorEmail(String email);
 }

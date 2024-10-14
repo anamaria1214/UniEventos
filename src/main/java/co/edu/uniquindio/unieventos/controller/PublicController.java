@@ -50,6 +50,14 @@ public class PublicController {
         }
     }
 
+
+    @PostMapping("/verificar-rol")
+    public ResponseEntity<MensajeDTO<String>> verificarRol(@RequestBody String email) {
+        String rol = cuentaServicio.obtenerRolPorEmail(email);  // Metodo que retorna el rol del usuario de acuerdo al email ingresado
+        return ResponseEntity.ok(new MensajeDTO<>(false, rol));
+    }
+
+
     @PostMapping("/crear-cuenta")
     public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception, PasswordException {
         cuentaServicio.crearCuenta(cuentaDTO);
