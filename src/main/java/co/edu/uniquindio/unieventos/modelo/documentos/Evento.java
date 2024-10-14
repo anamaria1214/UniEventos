@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unieventos.modelo.documentos;
 
+import co.edu.uniquindio.unieventos.exceptions.LocalidadException;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
@@ -55,16 +56,16 @@ public class Evento {
         this.promedioCalificaciones = promedioCalificaciones;
     }
 
-    public Localidad obtenerLocalidad(String nombre) throws Exception {
+    public Localidad obtenerLocalidad(String nombre) throws LocalidadException {
         for(Localidad localidad: localidades){
+            System.out.println("Localidades en Evento.java: " + localidad.getNombre());
             if(localidad.getNombre().equals(nombre)){
                 return localidad;
-
             }else{
-                throw new Exception("La localidad no existe");
-
+                throw new LocalidadException("La localidad: "+localidad.getNombre()+" no existe");
             }
         }
         return null;
     }
+
 }

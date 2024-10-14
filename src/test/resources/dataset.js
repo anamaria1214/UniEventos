@@ -469,7 +469,7 @@ db.carritos.insertMany([
                 "idEvento": "6702b8e9baeae320c8bafc02"
             }
         ],
-        "_class": "co.edu.uniquindio.unieventos.modelo.documentos.Carrito"
+        "_class": "co.edu.uniquindio.unieventos.modelo.documentos   .Carrito"
     },
     {
         "_id": ObjectId("6704b1e9baeae320d8cafc02"),
