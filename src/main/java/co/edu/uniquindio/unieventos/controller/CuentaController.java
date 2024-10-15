@@ -29,6 +29,8 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaServicio.obtenerCuenta(id));
     }
 
+
+
     @PostMapping("/validar-codigo")
     public ResponseEntity<MessageDTO> validarCodigo(@Valid @RequestBody ValidarCodigoDTO validarCodigoDTO) throws CuentaException{
         try {
@@ -60,25 +62,7 @@ public class CuentaController {
         String message= "La cuenta ha sido eliminada con exito";
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }
-    /**
-     * Los comento para debatir sobre si deberian de ser publicos, ya que si no se acuerdq la contraseña no puede tener un token y no podra editar la cuenta
-    @PostMapping("/login")
-    public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
-        TokenDTO tokenDTO= cuentaServicio.login(loginDTO);
-        return ResponseEntity.ok(new MensajeDTO<>(false, tokenDTO));
-    }
 
-    @PutMapping("/enviarCodigoPassword/{correo}")
-    public ResponseEntity<MensajeDTO<String>> enviarCodigoRecuperacion(@PathVariable("correo") String correo) throws Exception {
-        cuentaServicio.enviarCodigoRecuperacion(correo);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Envio del correo exitoso"));
-    }
 
-    @PostMapping("/cambiarPassword")
-    public ResponseEntity<MensajeDTO<String>> cambioPassword(@Valid @RequestBody CambiarPasswordDTO cambiarPassword) throws Exception {
-        cuentaServicio.cambioPassword(cambiarPassword);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
-    }
-    **/
 }

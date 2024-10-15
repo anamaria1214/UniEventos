@@ -173,7 +173,11 @@ public class CuentaServicioImpl implements CuentaServicio {
 
     @Override
     public String obtenerRolPorEmail(String email) {
-        return cuentaRepo.obtenerRolPorEmail(email);
+        Cuenta cuenta = getCuentaByEmail(email);
+        if (cuenta!=null){
+            return cuenta.getRol().toString();
+        }
+        return null;
     }
 
     public List<Cuenta> getAll(){
