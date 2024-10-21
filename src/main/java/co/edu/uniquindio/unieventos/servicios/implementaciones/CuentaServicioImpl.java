@@ -5,11 +5,15 @@ import co.edu.uniquindio.unieventos.dto.*;
 import co.edu.uniquindio.unieventos.exceptions.CuentaException;
 import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
+import co.edu.uniquindio.unieventos.modelo.documentos.Cupon;
 import co.edu.uniquindio.unieventos.modelo.enums.EstadoCuenta;
+import co.edu.uniquindio.unieventos.modelo.enums.EstadoCupon;
 import co.edu.uniquindio.unieventos.modelo.enums.Rol;
+import co.edu.uniquindio.unieventos.modelo.enums.TipoCupon;
 import co.edu.uniquindio.unieventos.modelo.vo.CodigoValidacion;
 import co.edu.uniquindio.unieventos.modelo.vo.Usuario;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
+import co.edu.uniquindio.unieventos.repositorios.CuponRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,11 +31,13 @@ public class CuentaServicioImpl implements CuentaServicio {
 
     //Variables
     private final CuentaRepo cuentaRepo;
+    private final CuponRepo cuponRepo;
     private final JWTUtils jwtUtils;
     private final EmailServicio emailServicio;
 
-    public CuentaServicioImpl(CuentaRepo cuentaRepo, JWTUtils jwtUtils, EmailServicio emailServicio){
+    public CuentaServicioImpl(CuentaRepo cuentaRepo, CuponRepo cuponRepo, JWTUtils jwtUtils, EmailServicio emailServicio){
         this.cuentaRepo=cuentaRepo;
+        this.cuponRepo = cuponRepo;
         this.jwtUtils = jwtUtils;
         this.emailServicio = emailServicio;
     }
@@ -72,6 +78,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         if(!cuenta.getCodValidacionRegistro().getCodigo().equals(validarCodigoDTO.codigo())){
             throw new CuentaException("El código ingresado es incorrecto");
         }
+        //TODO el código solo funciona por 15 minutos
 
         cuenta.setEstado(EstadoCuenta.ACTIVO);
         cuenta.setCodValidacionRegistro(null);
@@ -214,6 +221,19 @@ public class CuentaServicioImpl implements CuentaServicio {
                 "id", cuenta.getId()
         );
     }
-
-
+    private void enviarCupon(String email) throws Exception {
+        Optional<Cuenta> cuenta= cuentaRepo.buscarEmail(email);
+        if (cuenta.isEmpty()){
+            throw new CuentaException("No existe la cuenta");
+        }
+        Cuenta cuentaUser= cuenta.get();
+        String codigoCupon= generarCodigoValidacion();
+        String nombre = "Descuento de Bienvenida";
+        float descuento = 15.5f;
+        LocalDateTime fechaVencimiento = LocalDateTime.of(2024, 12, 31, 23, 59);
+        TipoCupon tipo = TipoCupon.UNICO;
+        Cupon nuevoCupon = new Cupon(nombre, descuento, fechaVencimiento, codigoCupon, EstadoCupon.DISPONIBLE ,tipo);
+        emailServicio.enviarCorreo(new EmailDTO("Bienvenido, gracias por registrarte", "Al registrarte tienes un código del 15% de descunto: "+codigoCupon+" este código es redimible una vez en cualquier orden", email));
+        cuponRepo.save(nuevoCupon);
+    }
 }

@@ -61,12 +61,11 @@ public class CarritoServicioImpl implements CarritoServicio {
             }
         }
         if(!existe){
-<<<<<<< HEAD
-            carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(), new ObjectId(agregarCarrito.idEvento())));
-=======
-            Evento eventoCARRITO= eventoServicio.obtenerEvento(agregarCarrito.idEvento());
-            carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(),new ObjectId(eventoCARRITO.getId())));
->>>>>>> 3d42869c2d3384b0ae08a115787bd0cf4b2ad5eb
+        carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(), new ObjectId(agregarCarrito.idEvento())));
+
+        Evento eventoCARRITO= eventoServicio.obtenerEvento(agregarCarrito.idEvento());
+        carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(),new ObjectId(eventoCARRITO.getId())));
+
         }
         carritoRepo.save(carrito);
         return "Se agregó el evento de manera exitosa";

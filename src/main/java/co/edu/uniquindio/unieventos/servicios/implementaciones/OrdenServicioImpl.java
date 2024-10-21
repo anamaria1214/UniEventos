@@ -100,7 +100,7 @@ public class OrdenServicioImpl implements OrdenServicio {
             int vendidas = localidad.getEntradasVendidas()-item.getCantidad();
             eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), vendidas);
         }
-        ordenRepo.deleteById(idOrden);
+        ordenRepo.deleteById(idOrden); //TODO Cambiar estado a Cancelado
     }
 
     @Override
@@ -158,7 +158,7 @@ public class OrdenServicioImpl implements OrdenServicio {
                             .categoryId(evento.getTipo().name())
                             .quantity(item.getCantidad())
                             .currencyId("COP")
-                            .unitPrice(BigDecimal.valueOf(localidad.getPrecio()))
+                            .unitPrice(BigDecimal.valueOf(localidad.getPrecio())) //TODO calcular el precio con el cupón
                             .build();
 
 

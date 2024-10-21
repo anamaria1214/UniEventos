@@ -61,7 +61,7 @@ public class EventoServicioImpl implements EventoServicio {
         } else if (evento.getEstado().equals(EstadoEvento.INACTIVO)) {
             throw new EventoException("El evento ya se encuentra inactivo");
         }
-        evento.setEstado(EstadoEvento.INACTIVO);
+        evento.setEstado(EstadoEvento.INACTIVO); //TODO borrar imágenes
         return eventoRepo.save(evento);//Se guarda el cambio de estado
     }
 
@@ -91,7 +91,7 @@ public class EventoServicioImpl implements EventoServicio {
     @Override
     public List<ItemEventoDTO> listarEventos() {
 
-        List<Evento> eventos = eventoRepo.findAll();
+            List<Evento> eventos = eventoRepo.findAll();
         List<ItemEventoDTO> respuesta = new ArrayList<>();
 
         for(Evento evento : eventos){

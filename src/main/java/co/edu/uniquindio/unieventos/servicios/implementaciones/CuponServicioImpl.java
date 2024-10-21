@@ -86,24 +86,6 @@ public class CuponServicioImpl implements CuponServicio {
         float descuento= cuponARedimir.getDescuento()/100;
         return total - (total*descuento);//Retorna el nuevo valor
     }
-
-    @Override
-    public void enviarCupon(String email) throws Exception {
-        Optional<Cuenta> cuenta= cuentaRepository.buscarEmail(email);
-        if (cuenta.isEmpty()){
-            throw new CuentaException("No existe la cuenta");
-        }
-        Cuenta cuentaUser= cuenta.get();
-        String codigoCupon= generarCodigoValidacion();
-        String nombre = "Descuento de Bienvenida";
-        float descuento = 15.5f;
-        LocalDateTime fechaVencimiento = LocalDateTime.of(2024, 12, 31, 23, 59);
-        TipoCupon tipo = TipoCupon.UNICO;
-        Cupon nuevoCupon = new Cupon(nombre, descuento, fechaVencimiento, codigoCupon,EstadoCupon.DISPONIBLE ,tipo);
-        emailServicio.enviarCorreo(new EmailDTO("Bienvenido, gracias por registrarte", "Al registrarte tienes un código del 15% de descunto: "+codigoCupon+" este código es redimible una vez en cualquier orden", email));
-        cuponRepository.save(nuevoCupon);
-    }
-
     @Override
     public Cupon getCuponByCodigo(String codigo) throws CuponException {
         return cuponRepository.findById(codigo).orElseThrow(()->new CuponException("No se ha encontrado ningún cupon"));
