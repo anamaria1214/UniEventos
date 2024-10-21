@@ -60,7 +60,7 @@ public class CuentaServicioImpl implements CuentaServicio {
         cuenta.setUsuario(new Usuario(cuentaDTO.idUsuario(), null, null, null));
         cuenta.setCodValidacionRegistro(codigo);
 
-        emailServicio.enviarCorreo( new EmailDTO("Código de validación", "El código de validación es: "+codigo.getCodigo(), cuentaDTO.correo()) );
+        emailServicio.enviarCorreo( new EmailDTO("Código de validación", "El código de validación es: "+codigo.getCodigo()+". Este código tendrá una validez de 15 minutos.", cuentaDTO.correo()) );
         cuentaRepo.save(cuenta);
 
     }
@@ -155,6 +155,7 @@ public class CuentaServicioImpl implements CuentaServicio {
     public TokenDTO login(LoginDTO loginDTO) throws Exception {
         Cuenta cuenta = getCuentaByEmail(loginDTO.correo());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // System.out.println(passwordEncoder.encode(loginDTO.password()));
         if( !passwordEncoder.matches(loginDTO.password(), cuenta.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }

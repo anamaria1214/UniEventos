@@ -11,6 +11,7 @@ import co.edu.uniquindio.unieventos.dto.global.MessageDTO;
 
 import co.edu.uniquindio.unieventos.servicios.interfaces.CalificacionServicio;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/evento")
+@RequiredArgsConstructor
 public class EventoController {
 
     @Autowired
     EventoServicioImpl eventoServicio;
-    private CalificacionServicio calificacionServicio;
+
+    private final CalificacionServicio calificacionServicio;
 
     /**
      * Metodo para obtener toda la lista de eventos disponibles
@@ -67,7 +70,7 @@ public class EventoController {
         return ResponseEntity.ok(new MessageDTO(HttpStatus.OK, message));
     }
 
-    @PutMapping("/calificar")
+    @PostMapping("/calificar")
     public ResponseEntity<MensajeDTO<String>> calificarEvento(@Valid @RequestBody CalificacionDTO calificacionDTO) throws Exception {
         calificacionServicio.calificarEvento(calificacionDTO);
         return ResponseEntity.ok(new MensajeDTO<>(false, "Evento calificado correctamente"));

@@ -8,6 +8,7 @@ import co.edu.uniquindio.unieventos.exceptions.PasswordException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.repositorios.CuentaRepo;
 import co.edu.uniquindio.unieventos.repositorios.EventoRepo;
+import co.edu.uniquindio.unieventos.servicios.interfaces.CalificacionServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
@@ -30,7 +31,7 @@ public class PublicController {
 
     private final CuentaServicio cuentaServicio;
     private final EventoServicio eventoServicio;
-
+    private final CalificacionServicio calificacionServicio;
     /**
      * Obtener todos los eventos disponibles
      * @return
@@ -75,5 +76,15 @@ public class PublicController {
         return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
     }
 
+    @PostMapping("/calificar")
+    public ResponseEntity<MensajeDTO<String>> calificarEvento(@Valid @RequestBody CalificacionDTO calificacionDTO) throws Exception {
+        calificacionServicio.calificarEvento(calificacionDTO);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Evento calificado correctamente"));
+    }
+    @GetMapping("/obtenerPromedio/{idEvento}")
+    public ResponseEntity<MensajeDTO<Double>> obtenerPromedioCalificaciones(String idEvento) throws Exception {
+        double promedio= calificacionServicio.obtenerPromedioCalificaciones(idEvento);
+        return ResponseEntity.ok(new MensajeDTO<>(false, promedio));
+    }
 
 }

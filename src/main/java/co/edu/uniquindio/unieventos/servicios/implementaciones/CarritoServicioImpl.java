@@ -63,7 +63,7 @@ public class CarritoServicioImpl implements CarritoServicio {
             }
         }
         if(!existe){
-            carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(), agregarCarrito.idEvento()));
+            carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(), new ObjectId(agregarCarrito.idEvento())));
         }
         carritoRepo.save(carrito);
         return "Se agregó el evento de manera exitosa";
@@ -100,7 +100,7 @@ public class CarritoServicioImpl implements CarritoServicio {
         List<CarritoDTO> respuesta = new ArrayList<>();
         for(int i=0;i<carritoItems.getItems().size();i++){
             respuesta.add(new CarritoDTO(
-                    carritoItems.getItems().get(i).getIdEvento(),
+                    carritoItems.getItems().get(i).getIdEvento().toString(),
                     carritoItems.getId(),
                     carritoItems.getItems().get(i).getCantidad(),
                     carritoItems.getItems().get(i).getNombreLocalidad()

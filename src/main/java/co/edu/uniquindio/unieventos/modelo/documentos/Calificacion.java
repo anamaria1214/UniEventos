@@ -19,13 +19,11 @@ public class Calificacion {
     private String id;
 
     private String idEvento;
-    private String idCuenta;
     private int calificacion;
     private LocalDateTime fechaCalificacion;
 
-    public Calificacion(String idEvento, String idCuenta, int calificacion) {
+    public Calificacion(String idEvento,  int calificacion) {
         this.idEvento = idEvento;
-        this.idCuenta = idCuenta;
         this.calificacion = calificacion;
         this.fechaCalificacion = LocalDateTime.now();
     }

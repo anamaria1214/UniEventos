@@ -57,11 +57,9 @@ public class CarritoController {
 
     @PostMapping("/crear-carrito/{id}")
     public ResponseEntity<MensajeDTO<String>> crearCarrito(@PathVariable String id) throws Exception {
-        try {
-            carritoServicio.crearCarrito(id);
-            return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito creado"));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new MensajeDTO<>(false, "Error al crear un carrito"));
-        }
+
+        carritoServicio.crearCarrito(id);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Carrito creado"));
+
     }
 }

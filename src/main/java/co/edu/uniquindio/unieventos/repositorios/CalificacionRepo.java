@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CalificacionRepo extends MongoRepository<Calificacion, String> {
-    Optional<Calificacion> findByIdCuentaAndIdEvento(String idCuenta, String idEvento);
     List<Calificacion> findByIdEvento(String idEvento);
 }

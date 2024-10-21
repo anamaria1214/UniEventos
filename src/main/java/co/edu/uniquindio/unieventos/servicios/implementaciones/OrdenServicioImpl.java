@@ -53,14 +53,14 @@ public class OrdenServicioImpl implements OrdenServicio {
         float total = 0;
 
         for (DetalleCarrito item : items) {
-            Evento evento = eventoServicio.obtenerEvento(item.getIdEvento());
+            Evento evento = eventoServicio.obtenerEvento(item.getIdEvento().toString());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
 
             if (!(localidad.getCapacidadMaxima() > localidad.getEntradasVendidas() + item.getCantidad())) {
                 throw new Exception("No hay aforo disponible para la localidad elegida");
             } else {
                 total += item.getCantidad() * localidad.getPrecio();
-                itemsOrden.add(new DetalleOrden(new ObjectId(), item.getIdEvento(), item.getNombreLocalidad(), localidad.getPrecio(), item.getCantidad()));
+                itemsOrden.add(new DetalleOrden(new ObjectId(), item.getIdEvento().toString(), item.getNombreLocalidad(), localidad.getPrecio(), item.getCantidad()));
                 eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), item.getCantidad());
             }
         }
@@ -172,7 +172,7 @@ public class OrdenServicioImpl implements OrdenServicio {
                 .backUrls(backUrls)
                 .items(itemsPasarela)
                 .metadata(Map.of("id_orden", ordenGuardada.getId()))
-                .notificationUrl("https://4734-189-50-209-152.ngrok-free.app/orden/notificacion-pago")
+                .notificationUrl("https://46a8-191-95-146-33.ngrok-free.app/api/orden/notificacion-pago")
                 .build();
 
 
