@@ -172,6 +172,15 @@ public class CuentaServicioImpl implements CuentaServicio {
         return cuentaRepo.buscarEmail(email).orElseThrow(()->new CuentaException("La cuenta no existe"));
     }
 
+    @Override
+    public String obtenerRolPorEmail(String email) {
+        Cuenta cuenta = getCuentaByEmail(email);
+        if (cuenta!=null){
+            return cuenta.getRol().toString();
+        }
+        return null;
+    }
+
     public List<Cuenta> getAll(){
         return cuentaRepo.findAll();
     }

@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * Controller en el que estaran los metodos a los que puede acceder cualquiera, es decir,  que no necesitan token
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/public")
@@ -50,6 +51,20 @@ public class PublicController {
             return ResponseEntity.badRequest().body(new MessageDTO(HttpStatus.BAD_REQUEST,cx.getMessage()));
         }
     }
+
+
+    @PostMapping("/verificar-rol/{email}")
+    public ResponseEntity<MensajeDTO<String>> verificarRol(@PathVariable String email) {
+        System.out.println("Buscando cuenta para el email: " + email); // Log para ver el email recibido
+        try {
+            String rol = cuentaServicio.obtenerRolPorEmail(email);
+            return ResponseEntity.ok(new MensajeDTO<>(false, rol));
+        } catch (CuentaException e) {
+            return ResponseEntity.badRequest().body(new MensajeDTO<>(true, e.getMessage()));
+        }
+    }
+
+
 
     @PostMapping("/crear-cuenta")
     public ResponseEntity<MensajeDTO<String>> save(@Valid @RequestBody CrearCuentaRegistroDTO cuentaDTO) throws CuentaException, Exception, PasswordException {

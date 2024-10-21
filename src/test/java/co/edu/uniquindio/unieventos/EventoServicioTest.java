@@ -29,7 +29,7 @@ public class EventoServicioTest {
         localidades.add(new Localidad("Platea", 12000,300,500));
         localidades.add(new Localidad("Oriente", 15500,300,600));
         CrearEventoDTO crearEventoDTO = new CrearEventoDTO(
-                "Concierto de Rock",
+                "Concierto de Rap",
                 "Un gran concierto con bandas famosas.",
                 "Calle Falsa 123",
                 "Bogotá",

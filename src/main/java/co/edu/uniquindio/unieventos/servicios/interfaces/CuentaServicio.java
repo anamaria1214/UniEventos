@@ -17,4 +17,7 @@ public interface CuentaServicio{
     TokenDTO login(LoginDTO loginDTO) throws Exception;
     Cuenta obtenerCuenta(String id) throws CuentaException;
     Cuenta getCuentaByEmail(String email);
+
+    String obtenerRolPorEmail(String email);
+
 }

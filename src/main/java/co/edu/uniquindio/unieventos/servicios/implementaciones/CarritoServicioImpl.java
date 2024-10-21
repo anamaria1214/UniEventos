@@ -4,11 +4,13 @@ import co.edu.uniquindio.unieventos.dto.CarritoDTO;
 import co.edu.uniquindio.unieventos.exceptions.CarritoException;
 import co.edu.uniquindio.unieventos.modelo.documentos.Carrito;
 import co.edu.uniquindio.unieventos.modelo.documentos.Cuenta;
+import co.edu.uniquindio.unieventos.modelo.documentos.Evento;
 import co.edu.uniquindio.unieventos.modelo.vo.DetalleCarrito;
 import co.edu.uniquindio.unieventos.repositorios.CarritoRepo;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CarritoServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,22 +19,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CarritoServicioImpl implements CarritoServicio {
 
     private final CarritoRepo carritoRepo;
     private final EventoServicio eventoServicio;
     private final CuentaServicio cuentaServicio;
 
-    public CarritoServicioImpl(CarritoRepo carritoRepo, EventoServicio eventoServicio, CuentaServicio cuentaServicio) {
-        this.carritoRepo = carritoRepo;
-        this.eventoServicio = eventoServicio;
-        this.cuentaServicio = cuentaServicio;
-    }
-
     private Carrito findById(String id) throws CarritoException{
-
+        // Is this findById not working?
         Optional<Carrito> carritoOptional= carritoRepo.findById(id);
 
         if(carritoOptional.isEmpty()){
@@ -63,7 +61,12 @@ public class CarritoServicioImpl implements CarritoServicio {
             }
         }
         if(!existe){
+<<<<<<< HEAD
             carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(), new ObjectId(agregarCarrito.idEvento())));
+=======
+            Evento eventoCARRITO= eventoServicio.obtenerEvento(agregarCarrito.idEvento());
+            carrito.getItems().add(new DetalleCarrito(agregarCarrito.nuevaCantidad(), agregarCarrito.nLocalidad(),new ObjectId(eventoCARRITO.getId())));
+>>>>>>> 3d42869c2d3384b0ae08a115787bd0cf4b2ad5eb
         }
         carritoRepo.save(carrito);
         return "Se agregó el evento de manera exitosa";
@@ -134,12 +137,7 @@ public class CarritoServicioImpl implements CarritoServicio {
 
     @Override
     public Carrito obtenerCarrito(String id) throws CarritoException{
-        try{
-            return findById(id);
-        }catch (CarritoException e){
-            throw new CarritoException("Carrito no encontrado");
-        }
-
+        return findById(id);
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface CuponServicio {
 
     float redimirCupon(String codigo, float total) throws Exception;
 
-    String enviarCupon(CuponEnviadoDTO cuponEnviado) throws Exception;
+    void enviarCupon(String email) throws Exception;
 
     Cupon getCuponByCodigo(String codigo) throws CuponException;
     

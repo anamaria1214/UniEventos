@@ -42,26 +42,34 @@ public class OrdenServicioImpl implements OrdenServicio {
     private final EmailServicio emailServicio;
     private final OrdenRepo ordenRepo;
     private final CuponServicio cuponServicio;
-    private final CuentaServicioImpl cuentaServicio;
+    private final CuentaServicio cuentaServicio;
 
     @Override
     public Orden crearOrden(CrearOrdenDTO crearOrdenDTO) throws Exception {
 
+        System.out.println("Object Id? " + crearOrdenDTO.idCarrito());
         Carrito carrito = carritoImpl.obtenerCarrito(crearOrdenDTO.idCarrito());
         List<DetalleCarrito> items = carrito.getItems();
         List<DetalleOrden> itemsOrden = new ArrayList<>();
         float total = 0;
 
         for (DetalleCarrito item : items) {
+            System.out.println(item.getNombreLocalidad());
             Evento evento = eventoServicio.obtenerEvento(item.getIdEvento().toString());
-            Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
+            System.out.println("El evento: " +  evento.toString());
+            ArrayList<Localidad> localidades = (ArrayList<Localidad>) evento.getLocalidades();
+            System.out.println("Tamaño localidades: " + localidades.size());
 
-            if (!(localidad.getCapacidadMaxima() > localidad.getEntradasVendidas() + item.getCantidad())) {
-                throw new Exception("No hay aforo disponible para la localidad elegida");
-            } else {
-                total += item.getCantidad() * localidad.getPrecio();
-                itemsOrden.add(new DetalleOrden(new ObjectId(), item.getIdEvento().toString(), item.getNombreLocalidad(), localidad.getPrecio(), item.getCantidad()));
-                eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), item.getCantidad());
+            for (Localidad localidad : localidades) {
+                System.out.println("La localidad: " + localidad.getNombre());
+
+                if (!(localidad.getCapacidadMaxima() > localidad.getEntradasVendidas() + item.getCantidad())) {
+                    throw new Exception("No hay aforo disponible para la localidad elegida");
+                } else {
+                    total += item.getCantidad() * localidad.getPrecio();
+                    itemsOrden.add(new DetalleOrden(new ObjectId(), item.getIdEvento().toString(), item.getNombreLocalidad(), localidad.getPrecio(), item.getCantidad()));
+                    eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), item.getCantidad());
+                }
             }
         }
         if(crearOrdenDTO.idCupon()!=null) {
@@ -87,6 +95,7 @@ public class OrdenServicioImpl implements OrdenServicio {
         List<DetalleOrden> items = orden.getItems();
         for(DetalleOrden item : items){
             Evento evento= eventoServicio.obtenerEvento(item.getIdEvento());
+            System.out.println("Evento:"+ evento.toString());
             Localidad localidad = evento.obtenerLocalidad(item.getNombreLocalidad());
             int vendidas = localidad.getEntradasVendidas()-item.getCantidad();
             eventoServicio.actualizarCapacidadLocalidad(evento, item.getNombreLocalidad(), vendidas);
