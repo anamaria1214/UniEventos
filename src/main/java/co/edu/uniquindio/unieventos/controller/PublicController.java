@@ -12,6 +12,7 @@ import co.edu.uniquindio.unieventos.servicios.interfaces.CalificacionServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.CuentaServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.unieventos.servicios.interfaces.EventoServicio;
+import co.edu.uniquindio.unieventos.servicios.interfaces.OrdenServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,7 +34,12 @@ public class PublicController {
 
     private final CuentaServicio cuentaServicio;
     private final EventoServicio eventoServicio;
+<<<<<<< Updated upstream
     private final CalificacionServicio calificacionServicio;
+=======
+    private final OrdenServicio ordenServicio;
+
+>>>>>>> Stashed changes
     /**
      * Obtener todos los eventos disponibles
      * @return
@@ -91,6 +98,7 @@ public class PublicController {
         return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
     }
 
+<<<<<<< Updated upstream
     @PostMapping("/calificar")
     public ResponseEntity<MensajeDTO<String>> calificarEvento(@Valid @RequestBody CalificacionDTO calificacionDTO) throws Exception {
         calificacionServicio.calificarEvento(calificacionDTO);
@@ -100,6 +108,11 @@ public class PublicController {
     public ResponseEntity<MensajeDTO<Double>> obtenerPromedioCalificaciones(String idEvento) throws Exception {
         double promedio= calificacionServicio.obtenerPromedioCalificaciones(idEvento);
         return ResponseEntity.ok(new MensajeDTO<>(false, promedio));
+=======
+    @PostMapping("/notificacion-pago")
+    public void recibirNotificacionMercadoPago(@RequestBody Map<String, Object> requestBody) {
+        ordenServicio.recibirNotificacionMercadoPago(requestBody);
+>>>>>>> Stashed changes
     }
 
 }

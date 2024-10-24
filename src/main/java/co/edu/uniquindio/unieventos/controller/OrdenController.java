@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/orden")
 
@@ -55,14 +55,6 @@ public class OrdenController {
     public ResponseEntity<MensajeDTO<Preference>> realizarPago(@PathVariable("idOrden") String idOrden) throws Exception{
         return ResponseEntity.ok().body(new MensajeDTO<>(false, ordenServicio.realizarPago(idOrden)));
     }
-
-
-    @PostMapping("/notificacion-pago")
-    public void recibirNotificacionMercadoPago(@RequestBody Map<String, Object> requestBody) {
-        ordenServicio.recibirNotificacionMercadoPago(requestBody);
-    }
-
-
 
 
 }
