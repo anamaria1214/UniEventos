@@ -34,12 +34,9 @@ public class PublicController {
 
     private final CuentaServicio cuentaServicio;
     private final EventoServicio eventoServicio;
-<<<<<<< Updated upstream
     private final CalificacionServicio calificacionServicio;
-=======
     private final OrdenServicio ordenServicio;
 
->>>>>>> Stashed changes
     /**
      * Obtener todos los eventos disponibles
      * @return
@@ -98,7 +95,7 @@ public class PublicController {
         return ResponseEntity.ok(new MensajeDTO<>(false, "Se cambio la contraseña exitosamente"));
     }
 
-<<<<<<< Updated upstream
+
     @PostMapping("/calificar")
     public ResponseEntity<MensajeDTO<String>> calificarEvento(@Valid @RequestBody CalificacionDTO calificacionDTO) throws Exception {
         calificacionServicio.calificarEvento(calificacionDTO);
@@ -106,13 +103,12 @@ public class PublicController {
     }
     @GetMapping("/obtenerPromedio/{idEvento}")
     public ResponseEntity<MensajeDTO<Double>> obtenerPromedioCalificaciones(String idEvento) throws Exception {
-        double promedio= calificacionServicio.obtenerPromedioCalificaciones(idEvento);
+        double promedio = calificacionServicio.obtenerPromedioCalificaciones(idEvento);
         return ResponseEntity.ok(new MensajeDTO<>(false, promedio));
-=======
+    }
     @PostMapping("/notificacion-pago")
-    public void recibirNotificacionMercadoPago(@RequestBody Map<String, Object> requestBody) {
+    public void recibirNotificacionMercadoPago(@RequestBody Map<String, Object> requestBody){
         ordenServicio.recibirNotificacionMercadoPago(requestBody);
->>>>>>> Stashed changes
     }
 
 }
