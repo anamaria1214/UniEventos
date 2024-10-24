@@ -181,11 +181,7 @@ public class OrdenServicioImpl implements OrdenServicio {
                 .backUrls(backUrls)
                 .items(itemsPasarela)
                 .metadata(Map.of("id_orden", ordenGuardada.getId()))
-<<<<<<< Updated upstream
                 .notificationUrl("https://46a8-191-95-146-33.ngrok-free.app/api/orden/notificacion-pago")
-=======
-                .notificationUrl("https://837d-189-50-209-223.ngrok-free.app/api/public/notificacion-pago")
->>>>>>> Stashed changes
                 .build();
 
 
